@@ -38,7 +38,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'clube.apps.ClubeConfig',
-    'django.contrib.admin',
     'rest_framework',
     'corsheaders',
 ]
