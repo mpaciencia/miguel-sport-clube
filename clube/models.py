@@ -1,16 +1,24 @@
 from django.db import models
 
 
-# ─────────────────────────────────────────────
-# DOMÍNIO DO MANUEL
-# ─────────────────────────────────────────────
 class Jogador(models.Model):
-    pass
+    POSICAO_CHOICES = [
+        ('GR', 'Guarda Redes'),
+        ('FX', 'Fixo'),
+        ('AL', 'Ala'),
+        ('PI', 'Pivot'),
+    ]
+
+    nome = models.CharField(max_length=100)
+    numero_camisola = models.PositiveIntegerField(unique=True)
+    posicao = models.CharField(max_length=2, choices=POSICAO_CHOICES)
+    data_nascimento = models.DateField()
+    ativo = models.BooleanField(default=True)
+
+    def __str__(self):
+        return f"{self.numero_camisola} - {self.nome}"
 
 
-# ─────────────────────────────────────────────
-# DOMÍNIO DO IVO — Jogos, Convocatórias, Estatísticas
-# ─────────────────────────────────────────────
 class Jogo(models.Model):
     adversario = models.CharField(max_length=100)
     data = models.DateTimeField()
@@ -51,6 +59,7 @@ class Estatistica(models.Model):
     def __str__(self):
         return f"Stats de {self.jogador} em {self.jogo}"
 
+
 class ClassificacaoEquipa(models.Model):
     nome = models.CharField(max_length=100)
     jogos = models.IntegerField(default=0)
@@ -60,7 +69,7 @@ class ClassificacaoEquipa(models.Model):
     golos_marcados = models.IntegerField(default=0)
     golos_sofridos = models.IntegerField(default=0)
     pontos = models.IntegerField(default=0)
-    is_nos = models.BooleanField(default=False)  # destaca o Miguel Sport Clube
+    is_nos = models.BooleanField(default=False)
 
     class Meta:
         ordering = ['-pontos', '-golos_marcados']
