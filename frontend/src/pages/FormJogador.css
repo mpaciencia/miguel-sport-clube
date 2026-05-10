@@ -1,0 +1,90 @@
+.formulario-card {
+    border: 1px solid #ccc;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+.erro-mensagem {
+    color: #dc3545;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.form-jogador {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.form-jogador label {
+    display: flex;
+    flex-direction: column;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.form-jogador input,
+.form-jogador select {
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-family: inherit;
+}
+
+.btn-guardar {
+    margin-top: 10px;
+    padding: 10px 15px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s ease;
+}
+
+.btn-guardar:hover {
+    background-color: #218838;
+}
+
+/* ... manter o CSS anterior e adicionar/atualizar isto no final: ... */
+
+.botoes-form {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.btn-guardar {
+    padding: 10px 15px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    flex: 1; /* Faz o botão esticar */
+    transition: background-color 0.2s ease;
+}
+
+.btn-guardar:hover {
+    background-color: #218838;
+}
+
+.btn-cancelar {
+    padding: 10px 15px;
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s ease;
+}
+
+.btn-cancelar:hover {
+    background-color: #5a6268;
+}

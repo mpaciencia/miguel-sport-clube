@@ -9,7 +9,9 @@ function Equipa() {
     useEffect(() => {
         axios.get('http://localhost:8000/api/jogadores/')
             .then(response => setJogadores(response.data))
-    })
+            // Boa prática: sempre apanhar erros em chamadas de rede!
+            .catch(error => console.error("Erro a buscar os jogadores:", error));
+    }, []);
 
     return (
         <div className="equipa-container">

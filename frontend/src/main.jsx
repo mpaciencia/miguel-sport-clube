@@ -12,6 +12,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import './index.css'
 import Equipa from './pages/Equipa.jsx'
 import PerfilJogador from './pages/PerfilJogador.jsx'
+import StaffJogadores from "./pages/StaffJogadores.jsx";
 
 createRoot(document.getElementById('root')).render(
     <StrictMode>
