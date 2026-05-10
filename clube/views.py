@@ -5,7 +5,7 @@ from rest_framework import status
 from .models import Jogador
 from .serializers import JogadorSerializer
 
-# Create your views here.
+
 @api_view(['GET', 'POST'])
 def jogadores(request):
     if request.method == 'GET':
@@ -17,7 +17,8 @@ def jogadores(request):
         if serializer.is_valid():
             serializer.save()
             return Response(status=status.HTTP_201_CREATED)
-        return Response(status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 @api_view(['GET', 'PUT', 'DELETE'])
 def jogador_detail(request, jogador_id):
@@ -25,14 +26,19 @@ def jogador_detail(request, jogador_id):
         jogador = Jogador.objects.get(pk=jogador_id)
     except Jogador.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
+
     if request.method == 'GET':
         serializer = JogadorSerializer(jogador)
         return Response(serializer.data)
+
     elif request.method == 'PUT':
         serializer = JogadorSerializer(jogador, data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(status=status.HTTP_200_OK)
-        elif request.method == 'DELETE':
-            jogador.delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        # Se os dados enviados no PUT não forem válidos, devolvemos 400
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    elif request.method == 'DELETE':
+        jogador.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
