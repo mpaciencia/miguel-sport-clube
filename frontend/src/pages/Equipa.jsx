@@ -25,7 +25,7 @@ function Equipa() {
             <h1>Equipa</h1>
             <div className="equipa-grelha">
                 {jogadores.map(jogador => (
-                    <Link to={`/equipa/${jogador.id}`} key={jogador.id} style={{ textDecoration: 'none', color: 'inherit' }}>
+                    <Link to={`/equipa/${jogador.id}`} key={jogador.id} className="jogador-link">
                         <div className="jogador-card">
                             <h3>#{jogador.numero_camisola}</h3>
                             <p>{jogador.nome}</p>
