@@ -2,9 +2,9 @@ import { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 
-const URL_JOGOS = 'http://127.0.0.1:8000/clube/api/jogos/'
-const URL_ESTATISTICAS = 'http://127.0.0.1:8000/clube/api/estatisticas/'
-const URL_CONVOCATORIAS = 'http://127.0.0.1:8000/clube/api/convocatorias/'
+const URL_JOGOS = 'http://127.0.0.1:8000/api/jogos/'
+const URL_ESTATISTICAS = 'http://127.0.0.1:8000/api/estatisticas/'
+const URL_CONVOCATORIAS = 'http://127.0.0.1:8000/api/convocatorias/'
 
 function RegistarResultado() {
   const navigate = useNavigate()

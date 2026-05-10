@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 
-const URL_JOGOS = 'http://127.0.0.1:8000/clube/api/jogos/'
+const URL_JOGOS = 'http://127.0.0.1:8000/api/jogos/'
 
 function Jogos() {
   const [jogos, setJogos] = useState([])

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 
-const URL_CLASSIFICACAO = 'http://127.0.0.1:8000/clube/api/classificacao/'
+const URL_CLASSIFICACAO = 'http://127.0.0.1:8000/api/classificacao/'
 
 function Classificacao() {
   const [equipas, setEquipas] = useState([])
