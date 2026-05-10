@@ -5,11 +5,20 @@ import './Equipa.css'
 
 function Equipa() {
     const [jogadores, setJogadores] = useState([]);
+    const [erro, setErro] = useState('');
 
     useEffect(() => {
         axios.get('http://localhost:8000/api/jogadores/')
-            .then(response => setJogadores(response.data))
-    })
+            .then(response => {
+                setJogadores(response.data)
+                setErro('')
+            })
+            .catch(() => setErro('Não foi possível carregar a equipa.'))
+    }, [])
+
+    if (erro) {
+        return <p>{erro}</p>
+    }
 
     return (
         <div className="equipa-container">
