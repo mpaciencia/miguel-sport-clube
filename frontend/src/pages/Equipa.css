@@ -1,0 +1,16 @@
+.equipa-container {
+    padding: 24px;
+}
+
+.equipa-grelha {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.jogador-card {
+    border: 1px solid #ccc;
+    padding: 16px;
+    border-radius: 8px;
+    width: 150px;
+}
