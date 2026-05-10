@@ -5,18 +5,12 @@ import axios from 'axios'
 function PerfilJogador() {
     const { id } = useParams()
     const [jogador, setJogador] = useState(null)
-    const [erro, setErro] = useState('')
 
     useEffect(() => {
         axios.get(`http://localhost:8000/api/jogadores/${id}/`)
-            .then(response => {
-                setJogador(response.data)
-                setErro('')
-            })
-            .catch(() => setErro('Não foi possível carregar o perfil do jogador.'))
+            .then(response => setJogador(response.data))
     }, [id])
 
-    if (erro) return <p>{erro}</p>
     if (!jogador) return <p>A carregar...</p>
 
     return (

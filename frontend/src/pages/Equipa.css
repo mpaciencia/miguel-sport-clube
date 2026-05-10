@@ -8,11 +8,6 @@
     gap: 16px;
 }
 
-.jogador-link {
-    text-decoration: none;
-    color: inherit;
-}
-
 .jogador-card {
     border: 1px solid #ccc;
     padding: 16px;

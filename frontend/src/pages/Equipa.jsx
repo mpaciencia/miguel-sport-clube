@@ -5,27 +5,18 @@ import './Equipa.css'
 
 function Equipa() {
     const [jogadores, setJogadores] = useState([]);
-    const [erro, setErro] = useState('');
 
     useEffect(() => {
         axios.get('http://localhost:8000/api/jogadores/')
-            .then(response => {
-                setJogadores(response.data)
-                setErro('')
-            })
-            .catch(() => setErro('Não foi possível carregar a equipa.'))
-    }, [])
-
-    if (erro) {
-        return <p>{erro}</p>
-    }
+            .then(response => setJogadores(response.data))
+    })
 
     return (
         <div className="equipa-container">
             <h1>Equipa</h1>
             <div className="equipa-grelha">
                 {jogadores.map(jogador => (
-                    <Link to={`/equipa/${jogador.id}`} key={jogador.id} className="jogador-link">
+                    <Link to={`/equipa/${jogador.id}`} key={jogador.id} style={{ textDecoration: 'none', color: 'inherit' }}>
                         <div className="jogador-card">
                             <h3>#{jogador.numero_camisola}</h3>
                             <p>{jogador.nome}</p>

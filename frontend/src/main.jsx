@@ -8,6 +8,10 @@ import Equipa from './pages/Equipa.jsx'
 import Jogos from './pages/Jogos.jsx'
 import PerfilJogador from './pages/PerfilJogador.jsx'
 import RegistarResultado from './pages/RegistarResultado.jsx'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import './index.css'
+import Equipa from './pages/Equipa.jsx'
+import PerfilJogador from './pages/PerfilJogador.jsx'
 
 createRoot(document.getElementById('root')).render(
     <StrictMode>
