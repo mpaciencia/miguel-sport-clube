@@ -1,0 +1,74 @@
+.navbar {
+    background-color: var(--cor-primaria);
+    border-bottom: 4px solid var(--cor-destaque);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.navbar-inner {
+    max-width: var(--largura-pagina);
+    margin: 0 auto;
+    padding: 0 var(--espacamento-pagina);
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* --- Marca / Logótipo --- */
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.navbar-logo-placeholder {
+    font-size: 1.6rem;
+    line-height: 1;
+}
+
+.navbar-nome {
+    font-family: var(--fonte-titulo);
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--cor-branco);
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+}
+
+/* --- Links --- */
+.navbar-links {
+    list-style: none;
+    display: flex;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-link {
+    display: inline-block;
+    padding: 8px 16px;
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    font-family: var(--fonte-corpo);
+    font-size: 0.95rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    border-radius: 4px;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.12);
+    color: var(--cor-branco);
+}
+
+.nav-link.ativo {
+    background-color: var(--cor-destaque);
+    color: var(--cor-branco);
+    font-weight: 700;
+}

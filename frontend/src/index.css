@@ -1,17 +1,216 @@
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+/* ============================================================
+   VARIÁVEIS GLOBAIS — Miguel Sport Clube
+   ============================================================ */
+:root {
+    /* Cores do clube */
+    --cor-primaria: #0d2a6e;      /* Azul escuro */
+    --cor-secundaria: #c0392b;    /* Vermelho */
+    --cor-destaque: #c0392b;      /* Vermelho para destaques e elementos ativos */
+    --cor-branco: #ffffff;
+    --cor-fundo: #f4f5f7;         /* Fundo geral da página */
+    --cor-fundo-card: #ffffff;    /* Fundo de cards e painéis */
+    --cor-borda: #dde1e9;
+    --cor-texto: #1a1a2e;         /* Texto principal */
+    --cor-texto-suave: #5a6375;   /* Texto secundário / legendas */
+
+    /* Tipografia */
+    --fonte-titulo: 'Georgia', 'Times New Roman', serif;
+    --fonte-corpo: 'Trebuchet MS', 'Segoe UI', sans-serif;
+
+    /* Layout */
+    --largura-pagina: 1100px;
+    --espacamento-pagina: 24px;
+    --raio-borda: 8px;
+
+    /* Sombras */
+    --sombra-card: 0 2px 8px rgba(0, 0, 0, 0.08);
+    --sombra-card-hover: 0 4px 16px rgba(0, 0, 0, 0.14);
+}
+
+/* ============================================================
+   RESET E BASE
+   ============================================================ */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 16px;
+    scroll-behavior: smooth;
 }
 
 body {
-  font-family: system-ui, sans-serif;
-  background: #f5f5f5;
-  color: #333;
+    font-family: var(--fonte-corpo);
+    background-color: var(--cor-fundo);
+    color: var(--cor-texto);
+    line-height: 1.6;
+    min-height: 100vh;
 }
 
-#root {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 24px;
+/* ============================================================
+   ESTRUTURA DA PÁGINA
+   ============================================================ */
+
+/* O conteúdo de cada página fica dentro de .pagina-conteudo */
+.pagina-conteudo {
+    max-width: var(--largura-pagina);
+    margin: 0 auto;
+    padding: 32px var(--espacamento-pagina);
+}
+
+/* ============================================================
+   TIPOGRAFIA GLOBAL
+   ============================================================ */
+h1 {
+    font-family: var(--fonte-titulo);
+    font-size: 2rem;
+    color: var(--cor-primaria);
+    margin-bottom: 24px;
+    border-left: 4px solid var(--cor-destaque);
+    padding-left: 12px;
+}
+
+h2 {
+    font-family: var(--fonte-titulo);
+    font-size: 1.4rem;
+    color: var(--cor-primaria);
+    margin-bottom: 16px;
+}
+
+h3 {
+    font-size: 1.1rem;
+    color: var(--cor-primaria);
+    margin-bottom: 12px;
+}
+
+p {
+    margin-bottom: 8px;
+    color: var(--cor-texto);
+}
+
+a {
+    color: var(--cor-primaria);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* ============================================================
+   COMPONENTES REUTILIZÁVEIS
+   ============================================================ */
+
+/* Tabelas */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: var(--cor-fundo-card);
+    border-radius: var(--raio-borda);
+    overflow: hidden;
+    box-shadow: var(--sombra-card);
+    margin-bottom: 24px;
+}
+
+thead {
+    background-color: var(--cor-primaria);
+    color: var(--cor-branco);
+}
+
+th {
+    padding: 12px 16px;
+    text-align: left;
+    font-size: 0.85rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--cor-borda);
+    font-size: 0.95rem;
+}
+
+tbody tr:last-child td {
+    border-bottom: none;
+}
+
+tbody tr:hover {
+    background-color: #f0f3fa;
+}
+
+/* Cards */
+.card {
+    background-color: var(--cor-fundo-card);
+    border-radius: var(--raio-borda);
+    box-shadow: var(--sombra-card);
+    padding: 20px;
+    transition: box-shadow 0.2s ease;
+}
+
+.card:hover {
+    box-shadow: var(--sombra-card-hover);
+}
+
+/* Botões base */
+.btn {
+    display: inline-block;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 4px;
+    font-family: var(--fonte-corpo);
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease, opacity 0.2s ease;
+    text-decoration: none;
+}
+
+.btn-primario {
+    background-color: var(--cor-primaria);
+    color: var(--cor-branco);
+}
+
+.btn-primario:hover {
+    background-color: #0a2060;
+    text-decoration: none;
+    color: var(--cor-branco);
+}
+
+.btn-perigo {
+    background-color: var(--cor-secundaria);
+    color: var(--cor-branco);
+}
+
+.btn-perigo:hover {
+    background-color: #a93226;
+}
+
+.btn-neutro {
+    background-color: #6c757d;
+    color: var(--cor-branco);
+}
+
+.btn-neutro:hover {
+    background-color: #5a6268;
+}
+
+/* Mensagem de erro */
+.erro-mensagem {
+    color: var(--cor-secundaria);
+    font-weight: 600;
+    margin-bottom: 12px;
+    padding: 10px 14px;
+    background-color: #fdecea;
+    border-left: 4px solid var(--cor-secundaria);
+    border-radius: 4px;
+}
+
+/* Mensagem sem dados */
+.sem-dados {
+    color: var(--cor-texto-suave);
+    font-style: italic;
+    padding: 24px 0;
 }

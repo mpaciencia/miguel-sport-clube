@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react'
-import { useParams, Link } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
 function PerfilJogador() {
     const { id } = useParams()
     const [jogador, setJogador] = useState(null)
+    const navigate = useNavigate()
 
     useEffect(() => {
         axios.get(`http://localhost:8000/api/jogadores/${id}/`)
@@ -15,7 +16,7 @@ function PerfilJogador() {
 
     return (
         <div>
-            <Link to="/equipa">← Voltar</Link>
+            <button onClick={() => navigate(-1)}>← Voltar</button>
             <h1>{jogador.nome}</h1>
             <p>Número: #{jogador.numero_camisola}</p>
             <p>Posição: {jogador.posicao}</p>
