@@ -13,4 +13,39 @@
     padding: 16px;
     border-radius: 8px;
     width: 150px;
+    text-align: center;
+    transition: box-shadow 0.2s;
+}
+
+.jogador-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Foto real do jogador */
+.jogador-foto {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: 8px;
+    border: 2px solid #ddd;
+}
+
+/* Placeholder quando não há foto: círculo com o número da camisola */
+.jogador-foto-placeholder {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: #e0e0e0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 8px auto;
+    border: 2px solid #ccc;
+}
+
+.jogador-foto-placeholder span {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #666;
 }

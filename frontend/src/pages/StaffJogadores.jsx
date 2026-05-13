@@ -42,16 +42,17 @@ function StaffJogadores() {
             />
 
             <h3>Plantel Atual</h3>
-            <table className="tabela-jogadores">
-                <thead>
+            <div className="tabela-wrapper">
+                <table className="tabela-jogadores">
+                    <thead>
                     <tr>
                         <th>Nº</th>
                         <th>Nome</th>
                         <th>Posição</th>
                         <th>Ações</th>
                     </tr>
-                </thead>
-                <tbody>
+                    </thead>
+                    <tbody>
                     {jogadores.map(jogador => (
                         <tr key={jogador.id}>
                             <td>{jogador.numero_camisola}</td>
@@ -75,8 +76,9 @@ function StaffJogadores() {
                             </td>
                         </tr>
                     ))}
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            </div>
         </div>
     );
 }

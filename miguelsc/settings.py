@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -58,6 +59,8 @@ CORS_ALLOWED_ORIGINS = [
     'http://localhost:5173',
     'http://127.0.0.1:5173',
 ]
+
+CSRF_TRUSTED_ORIGINS = ["http://localhost:5173","http://127.0.0.1:5173"]
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
@@ -132,3 +135,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+
+# --- Configuração para alojamento de ficheiros de media (fotos dos jogadores) ---
+# As imagens enviadas ficam guardadas em clube/media/
+MEDIA_URL = '/clube/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'clube/media')

@@ -14,6 +14,9 @@ class Jogador(models.Model):
     posicao = models.CharField(max_length=2, choices=POSICAO_CHOICES)
     data_nascimento = models.DateField()
     ativo = models.BooleanField(default=True)
+    # As fotos ficam guardadas em clube/media/fotos_jogadores/
+    # Se não houver foto, o campo fica vazio (blank=True, null=True)
+    foto = models.ImageField(upload_to='fotos_jogadores/', blank=True, null=True)
 
     def __str__(self):
         return f"{self.numero_camisola} - {self.nome}"
