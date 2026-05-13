@@ -3,13 +3,14 @@ import axios from "axios";
 import { Link } from 'react-router-dom'
 import './Equipa.css'
 
+const BASE_URL = 'http://localhost:8000';
+
 function Equipa() {
     const [jogadores, setJogadores] = useState([]);
 
     useEffect(() => {
-        axios.get('http://localhost:8000/api/jogadores/')
+        axios.get(`${BASE_URL}/api/jogadores/`)
             .then(response => setJogadores(response.data))
-            // Boa prática: sempre apanhar erros em chamadas de rede!
             .catch(error => console.error("Erro a buscar os jogadores:", error));
     }, []);
 
@@ -20,6 +21,18 @@ function Equipa() {
                 {jogadores.map(jogador => (
                     <Link to={`/equipa/${jogador.id}`} key={jogador.id} style={{ textDecoration: 'none', color: 'inherit' }}>
                         <div className="jogador-card">
+                            {/* Foto do jogador: se existir, mostra-a; caso contrário, mostra um placeholder */}
+                            {jogador.foto ? (
+                                <img
+                                    src={BASE_URL + jogador.foto}
+                                    alt={`Foto de ${jogador.nome}`}
+                                    className="jogador-foto"
+                                />
+                            ) : (
+                                <div className="jogador-foto-placeholder">
+                                    <span>{jogador.numero_camisola}</span>
+                                </div>
+                            )}
                             <h3>#{jogador.numero_camisola}</h3>
                             <p>{jogador.nome}</p>
                             <p>{jogador.posicao}</p>
@@ -30,4 +43,5 @@ function Equipa() {
         </div>
     )
 }
+
 export default Equipa;

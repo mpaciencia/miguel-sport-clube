@@ -6,7 +6,7 @@ function Navbar() {
         <nav className="navbar">
             <div className="navbar-inner">
                 <Link to="/" className="navbar-brand">
-                    <span className="navbar-logo-placeholder">⚽</span>
+                    <img src="/msclogo.png" alt="Logo Miguel Sport Clube" className="navbar-logo" />
                     <span className="navbar-nome">Miguel Sport Clube</span>
                 </Link>
                 <ul className="navbar-links">

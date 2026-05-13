@@ -1,5 +1,6 @@
 from rest_framework import status
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, parser_classes
+from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from rest_framework.response import Response
 
 from .models import Jogador, Jogo, Convocatoria, Estatistica, ClassificacaoEquipa
@@ -13,19 +14,25 @@ from .serializers import (
 
 
 @api_view(['GET', 'POST'])
+@parser_classes([MultiPartParser, FormParser, JSONParser])
 def jogadores(request):
     if request.method == 'GET':
         jogador_list = Jogador.objects.all()
         serializer = JogadorSerializer(jogador_list, many=True)
         return Response(serializer.data)
+
     elif request.method == 'POST':
+        # O pedido pode vir como multipart/form-data (quando inclui foto)
+        # ou como JSON (quando não inclui foto). Ambos são suportados pelos parsers.
         serializer = JogadorSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 @api_view(['GET', 'PUT', 'DELETE'])
+@parser_classes([MultiPartParser, FormParser, JSONParser])
 def jogador_detail(request, jogador_id):
     try:
         jogador = Jogador.objects.get(pk=jogador_id)
@@ -37,12 +44,14 @@ def jogador_detail(request, jogador_id):
         return Response(serializer.data)
 
     if request.method == 'PUT':
-        serializer = JogadorSerializer(jogador, data=request.data)
+        # partial=True permite atualizar apenas alguns campos (ex: só a foto)
+        serializer = JogadorSerializer(jogador, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    # DELETE
     jogador.delete()
     return Response(status=status.HTTP_204_NO_CONTENT)
 
