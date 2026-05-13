@@ -1,3 +1,4 @@
+from django.contrib.auth import authenticate, login
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -142,3 +143,25 @@ def classificacao_list(request):
     equipas = ClassificacaoEquipa.objects.all()
     serializer = ClassificacaoSerializer(equipas, many=True)
     return Response(serializer.data)
+
+@api_view(['POST'])
+def login_api(request):
+
+    #react envia dados
+    username = request.data.get('username')
+    password = request.data.get('password')
+
+    #verifica se existe user
+    user = authenticate(request, username=username, password=password)
+
+    if user is not None:
+        login(request, user)
+
+        #devolver msg ao react em json
+        return Response({
+            "mensagem": "Login feito com sucesso.",
+            "username": user.username,
+            "is_staff": user.is_staff
+        })
+    else:
+        return Response({"erro":"username ou password incorretos." }, status=status.HTTP_400_BAD_REQUEST)

@@ -14,4 +14,5 @@ urlpatterns = [
     path('api/convocatorias/<int:pk>/', views.convocatoria_detail),
     path('api/estatisticas/', views.estatisticas_list),
     path('api/classificacao/', views.classificacao_list),
+    path('api/login/', views.login_api, name='login_api'),
 ]
