@@ -3,15 +3,15 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from .models import Jogador, Jogo, Convocatoria, Estatistica, ClassificacaoEquipa
+from .models import Jogador, Jogo, Convocatoria, Estatistica, ClassificacaoEquipa, Treino
 from .serializers import (
     JogadorSerializer,
     JogoSerializer,
     ConvocatoriaSerializer,
     EstatisticaSerializer,
     ClassificacaoSerializer,
+    TreinoSerializer,
 )
-
 
 @api_view(['GET', 'POST'])
 def jogadores(request):
@@ -165,3 +165,14 @@ def login_api(request):
         })
     else:
         return Response({"erro":"username ou password incorretos." }, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+def proximos_treinos(request):
+    # vai à bd buscar tds os treinos
+    treinos = Treino.objects.all()
+
+    # passa treinos pelo tradutos
+    serializer = TreinoSerializer(treinos, many=True)
+
+    # devolve a resposta para o react
+    return Response(serializer.data)
