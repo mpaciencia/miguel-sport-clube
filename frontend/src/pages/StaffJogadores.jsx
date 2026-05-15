@@ -99,7 +99,7 @@ function StaffJogadores() {
                     <h3 style={{ marginTop: 0, color: 'darkslategray' }}>Próximos Treinos</h3>
                     {treinos.length > 0 ? (
                         <ul style={{ paddingLeft: '20px', margin: 0 }}>
-                            {treinos && treinos.map(t => (
+                            {treinos &&  treinos.map(t => (
                                 <li key={t.id} style={{ marginBottom: '10px' }}>
                                     <strong>{t.data}</strong> às {t.hora} <br/>
                                     <span style={{ fontSize: '0.9em', color: 'gray' }}>📍 {t.local}</span>
