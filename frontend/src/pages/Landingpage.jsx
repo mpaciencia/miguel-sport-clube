@@ -4,6 +4,7 @@ import axios from 'axios'
 import './LandingPage.css'
 
 const JOGADORES_POR_PAGINA = 5
+const BASE_URL = 'http://localhost:8000'
 
 function LandingPage() {
     const [jogadores, setJogadores] = useState([])
@@ -85,10 +86,28 @@ function LandingPage() {
                                             key={jogador.id}
                                             className="jogador-card-landing"
                                         >
-                                            <div className="jogador-numero">#{jogador.numero_camisola}</div>
-                                            <div className="jogador-nome">{jogador.nome}</div>
-                                            <div className="jogador-posicao">
-                                                {posicaoLabel[jogador.posicao] || jogador.posicao}
+                                            {/* Nova secção para a foto */}
+                                            <div className="jogador-foto-container">
+                                                {jogador.foto ? (
+                                                    <img
+                                                        src={`${BASE_URL}${jogador.foto}`}
+                                                        alt={`Foto de ${jogador.nome}`}
+                                                        className="jogador-foto-landing"
+                                                    />
+                                                ) : (
+                                                    <div className="jogador-foto-placeholder">
+                                                        <span>#{jogador.numero_camisola}</span>
+                                                    </div>
+                                                )}
+                                            </div>
+
+                                            {/* Secção da Informação do jogador */}
+                                            <div className="jogador-info-landing">
+                                                <div className="jogador-numero">#{jogador.numero_camisola}</div>
+                                                <div className="jogador-nome">{jogador.nome}</div>
+                                                <div className="jogador-posicao">
+                                                    {posicaoLabel[jogador.posicao] || jogador.posicao}
+                                                </div>
                                             </div>
                                         </Link>
                                     ))}
