@@ -1,9 +1,5 @@
 from django.urls import path
-
 from . import views
-from .import views
-
-app_name = 'clube'
 
 urlpatterns = [
     path('api/jogadores/', views.jogadores),

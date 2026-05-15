@@ -16,6 +16,7 @@ import Jogos from './pages/Jogos.jsx'
 import Classificacao from './pages/Classificacao.jsx'
 import CriarJogo from './pages/CriarJogo.jsx'
 import RegistarResultado from './pages/RegistarResultado.jsx'
+import CriarConvocatoria from './pages/CriarConvocatoria'
 
 createRoot(document.getElementById('root')).render(
         <BrowserRouter>
@@ -32,6 +33,8 @@ createRoot(document.getElementById('root')).render(
                 <Route path="/staff/jogadores" element={<StaffJogadores />} />
                 <Route path="/staff/jogos/novo" element={<CriarJogo />} />
                 <Route path="/staff/jogos/resultado" element={<RegistarResultado />} />
+                <Route path="/staff/convocatorias/nova" element={<CriarConvocatoria />} />
+
             </Routes>
         </BrowserRouter>
 )
