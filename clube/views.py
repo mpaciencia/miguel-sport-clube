@@ -1,4 +1,4 @@
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -165,6 +165,11 @@ def login_api(request):
         })
     else:
         return Response({"erro":"username ou password incorretos." }, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+def logout_api(request):
+    logout(request)
+    return Response({"Logout feito com sucesso." }, status=status.HTTP_200_OK)
 
 @api_view(['GET'])
 def proximos_treinos(request):

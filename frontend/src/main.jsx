@@ -12,6 +12,7 @@ import PerfilJogador from './pages/PerfilJogador.jsx'
 import StaffJogadores from "./pages/StaffJogadores.jsx"
 import Navbar from './pages/Navbar.jsx'
 import LandingPage from './pages/LandingPage.jsx'
+import Dashboard from "./pages/Dashboard.jsx";
 
 // 3. Páginas do Domínio: Jogos e Classificação (Ivo)
 import Jogos from './pages/Jogos.jsx'
@@ -52,6 +53,11 @@ createRoot(document.getElementById('root')).render(
                     <Route path="/staff/jogos/resultado" element={
                         <RotaProtegida>
                             <RegistarResultado />
+                        </RotaProtegida>
+                    } />
+                    <Route path="/dashboard" element={
+                        <RotaProtegida>
+                            <Dashboard />
                         </RotaProtegida>
                     } />
                 </Routes>
