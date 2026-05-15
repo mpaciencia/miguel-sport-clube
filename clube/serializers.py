@@ -6,7 +6,7 @@ from .models import Jogador, Jogo, Convocatoria, Estatistica, ClassificacaoEquip
 class JogadorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Jogador
-        fields = ('id', 'nome', 'numero_camisola', 'posicao', 'data_nascimento')
+        fields = ('id', 'nome', 'numero_camisola', 'posicao', 'data_nascimento', 'foto')
 
 
 class JogoSerializer(serializers.ModelSerializer):

@@ -1,90 +1,118 @@
+/* ===========================
+   FormJogador.css — Redesign
+   =========================== */
+
 .formulario-card {
-    border: 1px solid #ccc;
-    padding: 20px;
-    margin-bottom: 20px;
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-top: 4px solid #2563eb;
     border-radius: 8px;
-    background-color: #f9f9f9;
+    padding: 28px 32px;
+    margin-bottom: 28px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.formulario-card h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 20px;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
 }
 
 .erro-mensagem {
-    color: #dc3545;
-    font-weight: bold;
-    margin-bottom: 10px;
+    background-color: #fef2f2;
+    border: 1px solid #fca5a5;
+    color: #b91c1c;
+    border-radius: 6px;
+    padding: 10px 14px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 16px;
 }
 
+/* Formulário */
 .form-jogador {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 16px;
 }
 
 .form-jogador label {
     display: flex;
     flex-direction: column;
-    font-weight: bold;
-    font-size: 0.9rem;
+    gap: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #475569;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
 }
 
 .form-jogador input,
 .form-jogador select {
-    padding: 8px;
-    margin-top: 5px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    padding: 10px 12px;
+    font-size: 0.95rem;
     font-family: inherit;
+    color: #1e293b;
+    background-color: #f8fafc;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
 }
 
-.btn-guardar {
-    margin-top: 10px;
-    padding: 10px 15px;
-    background-color: #28a745;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: background-color 0.2s ease;
+.form-jogador input:focus,
+.form-jogador select:focus {
+    border-color: #2563eb;
+    background-color: #ffffff;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
 }
 
-.btn-guardar:hover {
-    background-color: #218838;
-}
-
-/* ... manter o CSS anterior e adicionar/atualizar isto no final: ... */
-
+/* Botões */
 .botoes-form {
     display: flex;
     gap: 10px;
-    margin-top: 10px;
+    margin-top: 6px;
 }
 
 .btn-guardar {
-    padding: 10px 15px;
-    background-color: #28a745;
-    color: white;
+    flex: 1;
+    padding: 11px 18px;
+    background-color: #2563eb;
+    color: #ffffff;
     border: none;
-    border-radius: 4px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 700;
     cursor: pointer;
-    font-weight: bold;
-    flex: 1; /* Faz o botão esticar */
-    transition: background-color 0.2s ease;
+    letter-spacing: 0.02em;
+    transition: background-color 0.2s, transform 0.1s;
 }
 
 .btn-guardar:hover {
-    background-color: #218838;
+    background-color: #1d4ed8;
+}
+
+.btn-guardar:active {
+    transform: scale(0.98);
 }
 
 .btn-cancelar {
-    padding: 10px 15px;
-    background-color: #6c757d;
-    color: white;
-    border: none;
-    border-radius: 4px;
+    padding: 11px 18px;
+    background-color: transparent;
+    color: #64748b;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
     cursor: pointer;
-    font-weight: bold;
-    transition: background-color 0.2s ease;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s;
 }
 
 .btn-cancelar:hover {
-    background-color: #5a6268;
+    background-color: #f1f5f9;
+    color: #1e293b;
+    border-color: #94a3b8;
 }
