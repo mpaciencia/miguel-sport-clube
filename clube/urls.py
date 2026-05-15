@@ -1,5 +1,5 @@
 from django.urls import path
-
+from clube import views
 from . import views
 from .import views
 
@@ -14,4 +14,7 @@ urlpatterns = [
     path('api/convocatorias/<int:pk>/', views.convocatoria_detail),
     path('api/estatisticas/', views.estatisticas_list),
     path('api/classificacao/', views.classificacao_list),
+    path('api/login/', views.login_api, name='login_api'),
+    path('api/logout/', views.logout_api, name='logout_api'),
+    path('api/treinos/', views.proximos_treinos, name='proximos_treinos'),
 ]

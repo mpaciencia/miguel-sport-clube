@@ -1,17 +1,18 @@
+from django.contrib.auth import authenticate, login, logout
 from rest_framework import status
 from rest_framework.decorators import api_view, parser_classes
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from rest_framework.response import Response
 
-from .models import Jogador, Jogo, Convocatoria, Estatistica, ClassificacaoEquipa
+from .models import Jogador, Jogo, Convocatoria, Estatistica, ClassificacaoEquipa, Treino
 from .serializers import (
     JogadorSerializer,
     JogoSerializer,
     ConvocatoriaSerializer,
     EstatisticaSerializer,
     ClassificacaoSerializer,
+    TreinoSerializer,
 )
-
 
 @api_view(['GET', 'POST'])
 @parser_classes([MultiPartParser, FormParser, JSONParser])
@@ -150,4 +151,42 @@ def estatisticas_list(request):
 def classificacao_list(request):
     equipas = ClassificacaoEquipa.objects.all()
     serializer = ClassificacaoSerializer(equipas, many=True)
+    return Response(serializer.data)
+
+@api_view(['POST'])
+def login_api(request):
+
+    #react envia dados
+    username = request.data.get('username')
+    password = request.data.get('password')
+
+    #verifica se existe user
+    user = authenticate(request, username=username, password=password)
+
+    if user is not None:
+        login(request, user)
+
+        #devolver msg ao react em json
+        return Response({
+            "mensagem": "Login feito com sucesso.",
+            "username": user.username,
+            "is_staff": user.is_staff
+        })
+    else:
+        return Response({"erro":"username ou password incorretos." }, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+def logout_api(request):
+    logout(request)
+    return Response({"Logout feito com sucesso." }, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def proximos_treinos(request):
+    # vai à bd buscar tds os treinos
+    treinos = Treino.objects.all()
+
+    # passa treinos pelo tradutos
+    serializer = TreinoSerializer(treinos, many=True)
+
+    # devolve a resposta para o react
     return Response(serializer.data)
