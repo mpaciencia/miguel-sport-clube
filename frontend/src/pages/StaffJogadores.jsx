@@ -10,7 +10,7 @@ function StaffJogadores() {
     const [jogadores, setJogadores] = useState([]);
     const [jogadorEditando, setJogadorEditando] = useState(null);
 
-    const [treinos, setTreinos] = useState();
+    const [treinos, setTreinos] = useState([]);
 
     const fetchJogadores = () => {
         axios.get('http://localhost:8000/api/jogadores/')
