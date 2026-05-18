@@ -23,10 +23,9 @@ import RegistarResultado from './pages/RegistarResultado.jsx'
 // 4. Login e "segurança"
 import Login from "./pages/Login.jsx";
 import RotaProtegida from "./pages/RotaProtegida.jsx";
-import {StrictMode} from "react";
 
 createRoot(document.getElementById('root')).render(
-    <StrictMode>
+
         <AuthProvider>
             <BrowserRouter>
                 <Navbar />
@@ -38,30 +37,30 @@ createRoot(document.getElementById('root')).render(
                     <Route path="/equipa/:id" element={<PerfilJogador />} />
                     <Route path="/jogos" element={<Jogos />} />
                     <Route path="/classificacao" element={<Classificacao />} />
-
-                    {/* --- Rotas Privadas (Staff) --- */}
-                    <Route path="/staff/jogadores" element={
-                        <RotaProtegida>
-                            <StaffJogadores />
-                        </RotaProtegida>
-                    } />
-                    <Route path="/staff/jogos/novo" element={
-                        <RotaProtegida>
-                            <CriarJogo />
-                        </RotaProtegida>
-                    } />
-                    <Route path="/staff/jogos/resultado" element={
-                        <RotaProtegida>
-                            <RegistarResultado />
-                        </RotaProtegida>
-                    } />
                     <Route path="/dashboard" element={
                         <RotaProtegida>
                             <Dashboard />
                         </RotaProtegida>
                     } />
+
+                    {/* --- Rotas Privadas (Staff) --- */}
+                    <Route path="/staff/jogadores" element={
+                        <RotaProtegida apenasStaff={true}>
+                            <StaffJogadores />
+                        </RotaProtegida>
+                    } />
+                    <Route path="/staff/jogos/novo" element={
+                        <RotaProtegida apenasStaff={true}>
+                            <CriarJogo />
+                        </RotaProtegida>
+                    } />
+                    <Route path="/staff/jogos/resultado" element={
+                        <RotaProtegida apenasStaff={true}>
+                            <RegistarResultado />
+                        </RotaProtegida>
+                    } />
                 </Routes>
             </BrowserRouter>
         </AuthProvider>
-    </StrictMode>
+
 )
