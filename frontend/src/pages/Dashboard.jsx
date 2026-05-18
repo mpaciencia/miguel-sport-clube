@@ -12,6 +12,20 @@ const Dashboard = () => {
             .catch(error => console.error("Erro ao carregar treinos:", error))
     }, []);
 
+    const confirmarIda = (treinoId, resposta) => {
+        axios.post('http://localhost:8000/api/presenca/', {
+            id_treino: treinoId,
+            presenteTreino: resposta
+        })
+            .then(response => {
+                alert(response.data.message)
+            })
+            .catch(error => {
+                console.error("Erro ao guardar resposta:", error);
+                alert("Ocorreu um erro ao guardar a tua presença");
+            });
+    }
+
     return (
         <main className="container">
             <header style={{ textAlign: 'center', margin: '30px 0' }}>
@@ -21,17 +35,34 @@ const Dashboard = () => {
 
             <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
 
-                {/* SECÇÃO: PRÓXIMOS TREINOS (Tua responsabilidade) */}
+                {/* A TUA SECÇÃO: PRÓXIMOS TREINOS E PRESENÇAS */}
                 <section className="container3" style={{ flex: '1', minWidth: '300px' }}>
                     <h2 style={{ color: 'white' }}>Próximos Treinos</h2>
                     <div style={{ backgroundColor: 'white', padding: '20px', borderRadius: '8px', textAlign: 'left' }}>
                         {treinos.length > 0 ? (
                             <ul style={{ listStyle: 'none', padding: 0 }}>
                                 {treinos.map(t => (
-                                    <li key={t.id} style={{ marginBottom: '10px', borderBottom: '1px solid #eee', paddingBottom: '10px' }}>
+                                    <li key={t.id} style={{ marginBottom: '15px', borderBottom: '1px solid #ccc', paddingBottom: '15px' }}>
                                         <strong>📅 Data:</strong> {t.data} <br/>
                                         <strong>⏰ Hora:</strong> {t.hora} <br/>
-                                        <strong>📍 Local:</strong> {t.local}
+                                        <strong>📍 Local:</strong> {t.local} <br/>
+
+                                        {/* Os Botões de Presença */}
+                                        <div style={{ marginTop: '10px' }}>
+                                            <span style={{ marginRight: '10px', color: 'darkslategray', fontWeight: 'bold' }}>Marcar presença:</span>
+                                            <button
+                                                onClick={() => confirmarIda(t.id, true)}
+                                                style={{ backgroundColor: 'mediumseagreen', color: 'white', border: 'none', padding: '6px 12px', borderRadius: '4px', cursor: 'pointer', marginRight: '8px' }}
+                                            >
+                                                Vou
+                                            </button>
+                                            <button
+                                                onClick={() => confirmarIda(t.id, false)}
+                                                style={{ backgroundColor: 'tomato', color: 'white', border: 'none', padding: '6px 12px', borderRadius: '4px', cursor: 'pointer' }}
+                                            >
+                                                Não Vou
+                                            </button>
+                                        </div>
                                     </li>
                                 ))}
                             </ul>
@@ -41,18 +72,17 @@ const Dashboard = () => {
                     </div>
                 </section>
 
+                {/* SECÇÃO DO IVO (Placeholder) */}
                 <section className="container3" style={{ flex: '1', minWidth: '300px', backgroundColor: 'cornflowerblue' }}>
                     <h2 style={{ color: 'white' }}>Última Convocatória & Estatísticas</h2>
                     <div style={{ backgroundColor: 'white', padding: '20px', borderRadius: '8px', textAlign: 'center' }}>
-                        <p><em>(Em breve: Dados das convocatórias do Ivo e perfil do Manuel)</em></p>
-                        <div style={{ fontSize: '2em' }}>📊</div>
-                        <p style={{ color: 'navy', fontWeight: 'bold' }}>Golos este mês: 0</p>
+                        <p><em>(Em breve: Dados das convocatórias do Ivo)</em></p>
                     </div>
                 </section>
 
             </div>
         </main>
-    );
+    )
 }
 
 export default Dashboard;
