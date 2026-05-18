@@ -4,7 +4,7 @@ from rest_framework.decorators import api_view, parser_classes
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from rest_framework.response import Response
 
-from .models import Jogador, Jogo, Convocatoria, Estatistica, ClassificacaoEquipa, Treino
+from .models import Jogador, Jogo, Convocatoria, Estatistica, ClassificacaoEquipa, Treino, Presenca
 from .serializers import (
     JogadorSerializer,
     JogoSerializer,
@@ -190,3 +190,33 @@ def proximos_treinos(request):
 
     # devolve a resposta para o react
     return Response(serializer.data)
+
+@api_view(['POST'])
+def responder_presenca(request):
+    # dados enviados
+    id_treino = request.data.get('treino_id')
+    presenteTreino = request.data.get('confirmacao')
+
+    # django sabe qm faz pedido
+    jogador_logado = request.user
+
+    # encontrar treino na bd
+    try:
+        treino = Treino.objects.get(id=id_treino)
+    except Treino.DoesNotExist:
+        return Response({"erro": "Treino não encontrado"})
+
+    # jogador ja respjndeu a este treino ?
+    presenca_existente = Presenca.objects.filter(treino=treino, jogador=jogador_logado).first()
+    if presenca_existente is not None:
+        presenca_existente.presenteTreino = presenteTreino
+        presenca_existente.save()
+    else:
+        Presenca.objects.create(
+            treino=treino,
+            jogador=jogador_logado,
+            presenteTreino=presenteTreino
+        )
+
+    return Response({"A sua resposta foi guardada com sucesso!" }, status=status.HTTP_201_CREATED)
+
