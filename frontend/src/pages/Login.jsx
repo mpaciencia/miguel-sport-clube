@@ -38,26 +38,33 @@ const Login = () => {
     };
 
     return (
-        <main className="container">
-            <section className="container3" style={{ marginTop: '50px', maxWidth: '500px' }}>
-                <h2 style={{ color: 'white' }}>Entrar no Miguel Sport Clube</h2>
-                <form onSubmit={lidarComLogin} style={{ backgroundColor: 'white', padding: '30px', borderRadius: '10px', textAlign: 'left' }}>
-                    <div style={{ marginBottom: '15px' }}>
-                        <label>Username:</label>
-                        <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} required style={{ width: '100%', padding: '8px' }} />
+        <div className="login-page-container">
+            <div className="login-card">
+                <h2>Entrar no Miguel Sport Clube</h2>
+                <form onSubmit={lidarComLogin}>
+                    <div style={{ textAlign: 'left' }}>
+                        <label>Utilizador:</label>
+                        <input
+                            type="text"
+                            value={username}
+                            onChange={e => setUsername(e.target.value)}
+                            required
+                        />
                     </div>
-                    <div style={{ marginBottom: '20px' }}>
-                        <label>Password:</label>
-                        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required style={{ width: '100%', padding: '8px' }} />
+                    <div style={{ textAlign: 'left' }}>
+                        <label>Palavra-passe:</label>
+                        <input
+                            type="password"
+                            value={password}
+                            onChange={e => setPassword(e.target.value)}
+                            required
+                        />
                     </div>
-                    {message && <p style={{ color: 'red' }}>{message}</p>}
-                    <button type="submit" style={{ width: '100%', padding: '10px', backgroundColor: 'navy', color: 'white', cursor: 'pointer' }}>
-                        Entrar
-                    </button>
+                    <button type="submit">Iniciar Sessão</button>
                 </form>
-            </section>
-        </main>
+            </div>
+        </div>
     );
-};
+}
 
 export default Login;

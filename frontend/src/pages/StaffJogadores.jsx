@@ -96,13 +96,35 @@ function StaffJogadores() {
 
                 {/* Bloco dos teus Treinos */}
                 <div style={{ backgroundColor: 'white', padding: '15px', borderRadius: '8px', marginTop: '20px', boxShadow: '0 2px 4px rgba(0,0,0,0.05)' }}>
-                    <h3 style={{ marginTop: 0, color: 'darkslategray' }}>Próximos Treinos</h3>
-                    {treinos.length > 0 ? (
-                        <ul style={{ paddingLeft: '20px', margin: 0 }}>
-                            {treinos &&  treinos.map(t => (
-                                <li key={t.id} style={{ marginBottom: '10px' }}>
-                                    <strong>{t.data}</strong> às {t.hora} <br/>
-                                    <span style={{ fontSize: '0.9em', color: 'gray' }}>📍 {t.local}</span>
+                    <h3 style={{ marginTop: 0, color: 'darkslategray' }}>Próximos Treinos e Presenças</h3>
+
+                    {Array.isArray(treinos) && treinos.length > 0 ? (
+                        <ul style={{ paddingLeft: '0', listStyle: 'none', margin: 0 }}>
+                            {treinos.map(t => (
+                                <li key={t.id} style={{ marginBottom: '20px', borderBottom: '1px solid #e2e8f0', paddingBottom: '15px' }}>
+                                    <strong style={{ color: '#2d3748' }}>📅 {t.data} às {t.hora}</strong> <br/>
+                                    <span style={{ fontSize: '0.9em', color: '#718096' }}>📍 {t.local}</span>
+
+                                    {/* Zona de listagem de presenças para o Treinador */}
+                                    <div style={{ marginTop: '10px', fontSize: '0.85em', backgroundColor: '#f8fafc', padding: '8px', borderRadius: '5px' }}>
+
+                                        {/* Listar os Confirmados */}
+                                        <div style={{ marginBottom: '5px' }}>
+                                            <span style={{ color: 'mediumseagreen', fontWeight: 'bold' }}>Presentes: ({t.confirmados ? t.confirmados.length : 0}): </span>
+                                            <span style={{ color: '#4a5568' }}>
+                                                {t.confirmados && t.confirmados.length > 0 ? t.confirmados.join(', ') : 'Nenhum jogador confirmado'}
+                                            </span>
+                                        </div>
+
+                                        {/* Listar os Ausentes */}
+                                        <div>
+                                            <span style={{ color: 'tomato', fontWeight: 'bold' }}>Não Presentes({t.ausentes ? t.ausentes.length : 0}): </span>
+                                            <span style={{ color: '#4a5568' }}>
+                                                {t.ausentes && t.ausentes.length > 0 ? t.ausentes.join(', ') : 'Nenhuma ausência declarada'}
+                                            </span>
+                                        </div>
+
+                                    </div>
                                 </li>
                             ))}
                         </ul>

@@ -1,5 +1,6 @@
 from django.contrib.auth import authenticate, login, logout
 from rest_framework import status
+from django.contrib.auth.models import User
 from rest_framework.decorators import api_view, parser_classes
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from rest_framework.response import Response
@@ -194,29 +195,51 @@ def proximos_treinos(request):
 @api_view(['POST'])
 def responder_presenca(request):
     # dados enviados
-    id_treino = request.data.get('treino_id')
-    presenteTreino = request.data.get('confirmacao')
-
-    # django sabe qm faz pedido
-    jogador_logado = request.user
+    id_do_treino = request.data.get('id_treino')
+    vou_ao_treino = request.data.get('presenteTreino')
+    username_recebido = request.data.get('username')
 
     # encontrar treino na bd
     try:
-        treino = Treino.objects.get(id=id_treino)
+        treino = Treino.objects.get(id=id_do_treino)
+        jogador_logado = User.objects.get(username=username_recebido)
     except Treino.DoesNotExist:
-        return Response({"erro": "Treino não encontrado"})
+        return Response({"message": "Treino não encontrado"})
 
     # jogador ja respjndeu a este treino ?
     presenca_existente = Presenca.objects.filter(treino=treino, jogador=jogador_logado).first()
     if presenca_existente is not None:
-        presenca_existente.presenteTreino = presenteTreino
+        presenca_existente.confirmacao = vou_ao_treino
         presenca_existente.save()
     else:
         Presenca.objects.create(
             treino=treino,
             jogador=jogador_logado,
-            presenteTreino=presenteTreino
+            confirmacao=vou_ao_treino,
         )
 
-    return Response({"A sua resposta foi guardada com sucesso!" }, status=status.HTTP_201_CREATED)
+    return Response({"message": "A sua resposta foi guardada com sucesso!" }, status=status.HTTP_201_CREATED)
+
+@api_view(['GET'])
+def listar_treinos(request):
+    treinos = Treino.objects.all().order_by('data')
+    resultado=[]
+
+    for treino in treinos:
+        presencas = Presenca.objects.filter(treino=treino)
+
+        vao = [p.jogador.username for p in presencas if p.confirmacao is True]
+        n_vao = [p.jogador.username for p in presencas if p.confirmacao is False]
+
+        dados_treino = {
+            "id": treino.id,
+            "data": treino.data,
+            "hora": treino.hora,
+            "local": treino.local,
+            "confirmados": vao,
+            "ausentes": n_vao
+        }
+        resultado.append(dados_treino)
+
+    return Response(resultado)
 
