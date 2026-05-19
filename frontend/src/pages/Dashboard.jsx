@@ -6,6 +6,9 @@ const Dashboard = () => {
     const { user } = useContext(AuthContext);
     const [treinos, setTreinos] = useState([]);
 
+    const [treinosRespondidos, setTreinosRespondidos] = useState([]);
+
+
     useEffect(() => {
         axios.get('http://localhost:8000/api/treinos/')
             .then(response => setTreinos(response.data))
@@ -13,9 +16,11 @@ const Dashboard = () => {
     }, []);
 
     const confirmarIda = (treinoId, resposta) => {
+        setTreinosRespondidos([...treinosRespondidos, treinoId])
         axios.post('http://localhost:8000/api/presenca/', {
             id_treino: treinoId,
-            presenteTreino: resposta
+            presenteTreino: resposta,
+            username: user.username
         })
             .then(response => {
                 alert(response.data.message)

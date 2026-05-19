@@ -91,7 +91,7 @@ class Treino(models.Model):
 
 class Presenca(models.Model):
     treino = models.ForeignKey(Treino, on_delete=models.CASCADE, related_name='presencas')
-    jogador = models.ForeignKey(Jogador, on_delete=models.CASCADE, related_name='presencas_treino')
+    jogador = models.ForeignKey(User, on_delete=models.CASCADE, related_name='presencas_treino')
 
     confirmacao = models.BooleanField(default=False, null=True, blank=True)
 
@@ -102,4 +102,4 @@ class Presenca(models.Model):
         elif self.confirmacao is False:
             status = "Ausente"
 
-        return f"{self.jogador.nome} - {self.treino.data} ({status})"
+        return f"{self.jogador.username} - {self.treino.data} ({status})"
