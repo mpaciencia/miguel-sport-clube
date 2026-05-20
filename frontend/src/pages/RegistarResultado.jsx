@@ -136,7 +136,7 @@ function RegistarResultado() {
               <tbody>
                 {convocados.map(c => (
                   <tr key={c.jogador}>
-                    <td>{c.jogador_nome}</td>
+                    <td>Jogador #{c.jogador}</td>
                     <td>
                       <input
                         type="number"

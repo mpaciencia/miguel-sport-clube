@@ -30,14 +30,10 @@ class JogoSerializer(serializers.ModelSerializer):
 
 
 class ConvocatoriaSerializer(serializers.ModelSerializer):
-    jogador_nome = serializers.SerializerMethodField()
-
     class Meta:
         model = Convocatoria
-        fields = ('id', 'jogo', 'jogador', 'jogador_nome')
+        fields = ('id', 'jogo', 'jogador')
 
-    def get_jogador_nome(self, obj):
-        return str(obj.jogador)
 
 class EstatisticaSerializer(serializers.ModelSerializer):
     class Meta:
