@@ -13,6 +13,7 @@ import StaffJogadores from "./pages/StaffJogadores.jsx"
 import Navbar from './pages/Navbar.jsx'
 import LandingPage from './pages/LandingPage.jsx'
 import Dashboard from "./pages/Dashboard.jsx";
+import CriarConvocatoria from './pages/CriarConvocatoria'
 
 // 3. Páginas do Domínio: Jogos e Classificação (Ivo)
 import Jogos from './pages/Jogos.jsx'
@@ -57,6 +58,11 @@ createRoot(document.getElementById('root')).render(
                     <Route path="/staff/jogos/resultado" element={
                         <RotaProtegida apenasStaff={true}>
                             <RegistarResultado />
+                        </RotaProtegida>
+                    } />
+                    <Route path="/staff/convocatorias/nova" element={
+                        <RotaProtegida apenasStaff={true}>
+                            <CriarConvocatoria />
                         </RotaProtegida>
                     } />
                 </Routes>

@@ -1,6 +1,4 @@
 from django.urls import path
-from clube import views
-from . import views
 from .import views
 
 app_name = 'clube'
