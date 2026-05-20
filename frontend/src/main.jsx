@@ -1,7 +1,7 @@
-import { createRoot } from 'react-dom/client'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import {createRoot} from 'react-dom/client'
+import {BrowserRouter, Routes, Route} from 'react-router-dom'
 
-import { AuthProvider } from "./context/AuthContext.jsx";
+import {AuthProvider} from "./context/AuthContext.jsx";
 
 // 1. Estilos Globais
 import './index.css'
@@ -20,6 +20,8 @@ import Jogos from './pages/Jogos.jsx'
 import Classificacao from './pages/Classificacao.jsx'
 import CriarJogo from './pages/CriarJogo.jsx'
 import RegistarResultado from './pages/RegistarResultado.jsx'
+import CriarConvocatoria from './pages/CriarConvocatoria'
+import RegistarJogo from './pages/RegistarJogo';
 
 // 4. Login e "segurança"
 import Login from "./pages/Login.jsx";
@@ -27,49 +29,51 @@ import RotaProtegida from "./pages/RotaProtegida.jsx";
 import Registar from "./pages/Registar.jsx";
 
 createRoot(document.getElementById('root')).render(
+    <AuthProvider>
+        <BrowserRouter>
+            <Navbar/>
+            <Routes>
+                <Route path="/" element={<LandingPage/>}/>
+                {/* --- Rotas Públicas --- */}
+                <Route path="/login" element={<Login/>}/>
+                <Route path="/equipa" element={<Equipa/>}/>
+                <Route path="/equipa/:id" element={<PerfilJogador/>}/>
+                <Route path="/jogos" element={<Jogos/>}/>
+                <Route path="/classificacao" element={<Classificacao/>}/>
+                <Route path="/dashboard" element={
+                    <RotaProtegida>
+                        <Dashboard/>
+                    </RotaProtegida>
+                }/>
 
-        <AuthProvider>
-            <BrowserRouter>
-                <Navbar />
-                <Routes>
-                    <Route path="/" element={<LandingPage />} />
-                    {/* --- Rotas Públicas --- */}
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/equipa" element={<Equipa />} />
-                    <Route path="/equipa/:id" element={<PerfilJogador />} />
-                    <Route path="/jogos" element={<Jogos />} />
-                    <Route path="/classificacao" element={<Classificacao />} />
-                    <Route path="/dashboard" element={
-                        <RotaProtegida>
-                            <Dashboard />
-                        </RotaProtegida>
-                    } />
-                    <Route path="/registar" element={<Registar />} />
+                {/* --- Rotas Privadas (Staff) --- */}
+                <Route path="/staff/jogadores" element={
+                    <RotaProtegida apenasStaff={true}>
+                        <StaffJogadores/>
+                    </RotaProtegida>
+                }/>
+                <Route path="/staff/jogos/novo" element={
+                    <RotaProtegida apenasStaff={true}>
+                        <CriarJogo/>
+                    </RotaProtegida>
+                }/>
+                <Route path="/staff/jogos/resultado" element={
+                    <RotaProtegida apenasStaff={true}>
+                        <RegistarResultado/>
+                    </RotaProtegida>
+                }/>
+                <Route path="/staff/convocatoria/nova" element={
+                    <RotaProtegida apenasStaff={true}>
+                        <CriarConvocatoria/>
+                    </RotaProtegida>
+                }/>
+                <Route path="/staff/jogos/registar" element={
+                    <RotaProtegida apenasStaff={true}>
+                        <RegistarJogo/>
+                    </RotaProtegida>
+                }/>
+            </Routes>
 
-
-                    {/* --- Rotas Privadas (Staff) --- */}
-                    <Route path="/staff/jogadores" element={
-                        <RotaProtegida apenasStaff={true}>
-                            <StaffJogadores />
-                        </RotaProtegida>
-                    } />
-                    <Route path="/staff/jogos/novo" element={
-                        <RotaProtegida apenasStaff={true}>
-                            <CriarJogo />
-                        </RotaProtegida>
-                    } />
-                    <Route path="/staff/jogos/resultado" element={
-                        <RotaProtegida apenasStaff={true}>
-                            <RegistarResultado />
-                        </RotaProtegida>
-                    } />
-                    <Route path="/staff/convocatorias/nova" element={
-                        <RotaProtegida apenasStaff={true}>
-                            <CriarConvocatoria />
-                        </RotaProtegida>
-                    } />
-                </Routes>
-            </BrowserRouter>
-        </AuthProvider>
-
+        </BrowserRouter>
+    </AuthProvider>
 )
