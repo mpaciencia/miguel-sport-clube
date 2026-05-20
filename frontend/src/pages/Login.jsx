@@ -23,13 +23,7 @@ const Login = () => {
         .then(response => {
             fazerLogin(response.data);
             setMessage("Login efetuado com sucesso!")
-            navigate('/dashboard')
-
-            if(response.data.is_staff) {
-                navigate('/staff/jogadores');
-            } else {
-                navigate('/');
-            }
+            navigate(-1)
         })
             .catch(error => {
                 setMessage("username ou password incorretos");
