@@ -52,17 +52,6 @@ function LandingPage() {
 
             <div className="landing-grelha pagina-conteudo">
 
-                {/* ── PRÓXIMO JOGO — placeholder para o Ivo ── */}
-                <section className="bloco-secao bloco-placeholder">
-                    <h2 className="secao-titulo">Próximo Jogo</h2>
-                    <div className="placeholder-conteudo">
-                        <span className="placeholder-icone">🏟️</span>
-                        <p className="placeholder-texto">
-                            Bloco reservado para o Ivo.<br />
-                            Ligar à API <code>/api/jogos/</code> e mostrar o próximo jogo agendado.
-                        </p>
-                    </div>
-                </section>
 
                 {/* ── PLANTEL — carrossel ── */}
                 <section className="bloco-secao bloco-plantel">
