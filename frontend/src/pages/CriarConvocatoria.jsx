@@ -8,11 +8,17 @@ const URL_CONVOCATORIAS = 'http://127.0.0.1:8000/api/convocatorias/'
 function CriarConvocatoria() {
   const [jogos, setJogos] = useState([])
   const [jogadores, setJogadores] = useState([])
+
   const [jogoSelecionado, setJogoSelecionado] = useState('')
   const [selecionados, setSelecionados] = useState([])
+
+  // Guardar também os jogadores que já estavam na base de dados para este jogo
+  const [selecionadosIniciais, setSelecionadosIniciais] = useState([])
+
   const [erro, setErro] = useState('')
   const [sucesso, setSucesso] = useState('')
 
+  // 1. Carregar Dados Iniciais (Executa só 1 vez ao abrir a página)
   useEffect(() => {
     axios.get(URL_JOGOS)
       .then(response => setJogos(response.data))
@@ -22,6 +28,28 @@ function CriarConvocatoria() {
       .then(response => setJogadores(response.data))
       .catch(err => console.log('Erro ao carregar jogadores', err))
   }, [])
+
+  // 2. NOVO: Carregar convocados sempre que o "jogoSelecionado" muda!
+  useEffect(() => {
+    // Limpar as mensagens e as checkboxes sempre que muda o jogo
+    setErro('')
+    setSucesso('')
+    setSelecionados([])
+    setSelecionadosIniciais([])
+
+    if (jogoSelecionado) {
+      // Vai buscar as convocatórias que já existem para este jogo em específico
+      // (Lembras-te que programaste este filtro no views.py?)
+      axios.get(`${URL_CONVOCATORIAS}?jogo=${jogoSelecionado}`)
+        .then(response => {
+            // Extrai apenas os IDs dos jogadores que já estão convocados
+            const idsJaConvocados = response.data.map(conv => conv.jogador)
+            setSelecionados(idsJaConvocados)
+            setSelecionadosIniciais(idsJaConvocados) // Guarda como referência inicial
+        })
+        .catch(err => console.log('Erro ao carregar convocatórias existentes', err))
+    }
+  }, [jogoSelecionado])
 
   const toggleJogador = (id) => {
     setSelecionados(prev =>
@@ -37,28 +65,38 @@ function CriarConvocatoria() {
       return
     }
 
-    const pedidos = selecionados.map(jogadorId =>
+    // NOVO: Evitar enviar POST de jogadores que já lá estavam antes
+    const novosConvocados = selecionados.filter(id => !selecionadosIniciais.includes(id))
+
+    if (novosConvocados.length === 0) {
+      setErro('Estes jogadores já estão convocados. Nenhuma alteração nova feita.')
+      return
+    }
+
+    // Fazemos o POST apenas aos jogadores que adicionámos agora
+    const pedidos = novosConvocados.map(jogadorId =>
       axios.post(URL_CONVOCATORIAS, {
         jogo: parseInt(jogoSelecionado),
         jogador: jogadorId
-      }, { withCredentials: true })
+      }, { withCredentials: true }) // Nota: certifica-te de que o teu Django CORS aceita credentials
     )
 
     Promise.all(pedidos)
       .then(() => {
         setSucesso('Convocatória criada com sucesso!')
         setErro('')
-        setSelecionados([])
+        // Atualiza a referência para que num 2º clique ele saiba que já estão gravados
+        setSelecionadosIniciais(selecionados)
       })
       .catch(err => {
-        setErro('Erro ao criar convocatória. Verifica se estás autenticado como staff.')
+        setErro('Erro ao criar convocatória. Verifica as tuas permissões.')
         console.log(err)
       })
   }
 
   return (
     <div>
-      <h1>Criar Convocatória</h1>
+      <h1>Criar / Editar Convocatória</h1>
 
       {erro && <p style={{ color: 'red' }}>{erro}</p>}
       {sucesso && <p style={{ color: 'green' }}>{sucesso}</p>}
@@ -96,7 +134,7 @@ function CriarConvocatoria() {
           ))}
         </div>
 
-        <button type="submit">Criar Convocatória</button>
+        <button type="submit">Guardar Convocatória</button>
       </form>
     </div>
   )
