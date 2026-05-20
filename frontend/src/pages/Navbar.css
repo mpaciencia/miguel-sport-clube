@@ -26,9 +26,9 @@
     cursor: pointer;
 }
 
-.navbar-logo-placeholder {
-    font-size: 1.6rem;
-    line-height: 1;
+.navbar-logo {
+    height: 40px;
+    width: auto;
 }
 
 .navbar-nome {

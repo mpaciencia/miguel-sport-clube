@@ -1,12 +1,12 @@
 from rest_framework import serializers
 
-from .models import Jogador, Jogo, Convocatoria, Estatistica, ClassificacaoEquipa
+from .models import Jogador, Jogo, Convocatoria, Estatistica, ClassificacaoEquipa, Treino
 
 
 class JogadorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Jogador
-        fields = ('id', 'nome', 'numero_camisola', 'posicao', 'data_nascimento')
+        fields = ('id', 'nome', 'numero_camisola', 'posicao', 'data_nascimento', 'foto')
 
 
 class JogoSerializer(serializers.ModelSerializer):
@@ -60,3 +60,8 @@ class ClassificacaoSerializer(serializers.ModelSerializer):
             'pontos',
             'is_nos',
         )
+
+class TreinoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Treino
+        fields = '__all__'

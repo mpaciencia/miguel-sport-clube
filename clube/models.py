@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 
 class Jogador(models.Model):
@@ -14,6 +15,9 @@ class Jogador(models.Model):
     posicao = models.CharField(max_length=2, choices=POSICAO_CHOICES)
     data_nascimento = models.DateField()
     ativo = models.BooleanField(default=True)
+    # As fotos ficam guardadas em clube/media/fotos_jogadores/
+    # Se não houver foto, o campo fica vazio (blank=True, null=True)
+    foto = models.ImageField(upload_to='fotos_jogadores/', blank=True, null=True)
 
     def __str__(self):
         return f"{self.numero_camisola} - {self.nome}"
@@ -76,3 +80,26 @@ class ClassificacaoEquipa(models.Model):
 
     def __str__(self):
         return self.nome
+
+class Treino(models.Model):
+    data = models.DateField()
+    hora = models.TimeField()
+    local = models.CharField(max_length=100)
+
+    def __str__(self):
+        return f"Treino: {self.data} às {self.hora} em {self.local}"
+
+class Presenca(models.Model):
+    treino = models.ForeignKey(Treino, on_delete=models.CASCADE, related_name='presencas')
+    jogador = models.ForeignKey(User, on_delete=models.CASCADE, related_name='presencas_treino')
+
+    confirmacao = models.BooleanField(default=False, null=True, blank=True)
+
+    def __str__(self):
+        status = "Pendente"
+        if self.confirmacao is True:
+            status = "Confirmado"
+        elif self.confirmacao is False:
+            status = "Ausente"
+
+        return f"{self.jogador.username} - {self.treino.data} ({status})"

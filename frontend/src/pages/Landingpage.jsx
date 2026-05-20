@@ -1,11 +1,15 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 import './LandingPage.css'
+import { AuthContext } from "../context/AuthContext.jsx";
 
 const JOGADORES_POR_PAGINA = 5
+const BASE_URL = 'http://localhost:8000'
 
 function LandingPage() {
+    const { user } = useContext(AuthContext
+    )
     const [jogadores, setJogadores] = useState([])
     const [paginaAtual, setPaginaAtual] = useState(0)
 
@@ -85,10 +89,28 @@ function LandingPage() {
                                             key={jogador.id}
                                             className="jogador-card-landing"
                                         >
-                                            <div className="jogador-numero">#{jogador.numero_camisola}</div>
-                                            <div className="jogador-nome">{jogador.nome}</div>
-                                            <div className="jogador-posicao">
-                                                {posicaoLabel[jogador.posicao] || jogador.posicao}
+                                            {/* Nova secção para a foto */}
+                                            <div className="jogador-foto-container">
+                                                {jogador.foto ? (
+                                                    <img
+                                                        src={`${BASE_URL}${jogador.foto}`}
+                                                        alt={`Foto de ${jogador.nome}`}
+                                                        className="jogador-foto-landing"
+                                                    />
+                                                ) : (
+                                                    <div className="jogador-foto-placeholder">
+                                                        <span>#{jogador.numero_camisola}</span>
+                                                    </div>
+                                                )}
+                                            </div>
+
+                                            {/* Secção da Informação do jogador */}
+                                            <div className="jogador-info-landing">
+                                                <div className="jogador-numero">#{jogador.numero_camisola}</div>
+                                                <div className="jogador-nome">{jogador.nome}</div>
+                                                <div className="jogador-posicao">
+                                                    {posicaoLabel[jogador.posicao] || jogador.posicao}
+                                                </div>
                                             </div>
                                         </Link>
                                     ))}
@@ -119,14 +141,39 @@ function LandingPage() {
                 </section>
 
                 {/* ── LOGIN / REGISTO — placeholder para o Miguel ── */}
-                <section className="bloco-secao bloco-placeholder">
-                    <h2 className="secao-titulo">Área do Jogador</h2>
-                    <div className="placeholder-conteudo">
-                        <span className="placeholder-icone">🔐</span>
-                        <p className="placeholder-texto">
-                            Bloco reservado para o Miguel.<br />
-                            Formulário de login e link para registo.
-                        </p>
+                <section className="bloco-secao">
+                    <h2 className="secao-titulo">Área Privada</h2>
+
+                    <div style={{ backgroundColor: 'white', padding: '30px', borderRadius: '8px', textAlign: 'center', height: '100%' }}>
+
+                        {/* Renderização Condicional - A mesma lógica da NavBar */}
+                        {user ? (
+                            <>
+                                <div style={{ fontSize: '3em', marginBottom: '10px' }}>👋</div>
+                                <p style={{ fontWeight: 'bold', fontSize: '1.2em', color: 'navy', marginBottom: '20px' }}>
+                                    Bem-vindo de volta, {user.username}!
+                                </p>
+
+                                {/* O Link inteligente: se for staff vai para a gestão, se não, vai para o dashboard */}
+                                <Link
+                                    to={user.is_staff ? "/staff/jogadores" : "/dashboard"}
+                                    className="btn btn-hero"
+                                    style={{ backgroundColor: 'darkorange', display: 'inline-block' }}
+                                >
+                                    Aceder ao Dashboard
+                                </Link>
+                            </>
+                        ) : (
+                            <>
+                                <div style={{ fontSize: '3em', marginBottom: '10px' }}>🔐</div>
+                                <p style={{ color: 'darkslategray', marginBottom: '20px' }}>
+                                    És jogador ou fazes parte da equipa técnica? Entra na tua conta.
+                                </p>
+                                <Link to="/login" className="btn btn-hero" style={{ backgroundColor: 'navy', display: 'inline-block' }}>
+                                    Fazer Login
+                                </Link>
+                            </>
+                        )}
                     </div>
                 </section>
 
