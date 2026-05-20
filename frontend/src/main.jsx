@@ -19,6 +19,7 @@ import Jogos from './pages/Jogos.jsx'
 import Classificacao from './pages/Classificacao.jsx'
 import CriarJogo from './pages/CriarJogo.jsx'
 import RegistarResultado from './pages/RegistarResultado.jsx'
+import CriarConvocatoria from './pages/CriarConvocatoria'
 
 // 4. Login e "segurança"
 import Login from "./pages/Login.jsx";
@@ -59,6 +60,10 @@ createRoot(document.getElementById('root')).render(
                             <RegistarResultado />
                         </RotaProtegida>
                     } />
+                    <Route path="/staff/convocatorias/nova" element={
+                        <RotaProtegida apenasStaff={true}>
+                            <CriarConvocatoria />} />
+                        </RotaProtegida>
                 </Routes>
             </BrowserRouter>
         </AuthProvider>
