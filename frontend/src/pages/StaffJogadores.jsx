@@ -106,24 +106,19 @@ function StaffJogadores() {
                                     <span style={{ fontSize: '0.9em', color: '#718096' }}>📍 {t.local}</span>
 
                                     {/* Zona de listagem de presenças para o Treinador */}
-                                    <div style={{ marginTop: '10px', fontSize: '0.85em', backgroundColor: '#f8fafc', padding: '8px', borderRadius: '5px' }}>
-
-                                        {/* Listar os Confirmados */}
+                                    <div style={{ marginTop: '10px', fontSize: '0.9em', backgroundColor: '#f8fafc', padding: '8px', borderRadius: '5px' }}>
                                         <div style={{ marginBottom: '5px' }}>
-                                            <span style={{ color: 'mediumseagreen', fontWeight: 'bold' }}>Presentes: ({t.confirmados ? t.confirmados.length : 0}): </span>
+                                            <span style={{ color: 'mediumseagreen', fontWeight: 'bold' }}>Presentes: </span>
                                             <span style={{ color: '#4a5568' }}>
-                                                {t.confirmados && t.confirmados.length > 0 ? t.confirmados.join(', ') : 'Nenhum jogador confirmado'}
+                                                {t.confirmados && t.confirmados.length > 0 ? t.confirmados.join(', ') : 'Ninguém'}
                                             </span>
                                         </div>
-
-                                        {/* Listar os Ausentes */}
                                         <div>
-                                            <span style={{ color: 'tomato', fontWeight: 'bold' }}>Não Presentes({t.ausentes ? t.ausentes.length : 0}): </span>
+                                            <span style={{ color: 'tomato', fontWeight: 'bold' }}>Ausentes: </span>
                                             <span style={{ color: '#4a5568' }}>
-                                                {t.ausentes && t.ausentes.length > 0 ? t.ausentes.join(', ') : 'Nenhuma ausência declarada'}
+                                                {t.ausentes && t.ausentes.length > 0 ? t.ausentes.join(', ') : 'Ninguém'}
                                             </span>
                                         </div>
-
                                     </div>
                                 </li>
                             ))}

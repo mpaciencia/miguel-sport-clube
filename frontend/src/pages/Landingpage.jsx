@@ -58,8 +58,7 @@ function LandingPage() {
                     <div className="placeholder-conteudo">
                         <span className="placeholder-icone">🏟️</span>
                         <p className="placeholder-texto">
-                            Bloco reservado para o Ivo.<br />
-                            Ligar à API <code>/api/jogos/</code> e mostrar o próximo jogo agendado.
+                            ivoxxxxxx<br />
                         </p>
                     </div>
                 </section>
