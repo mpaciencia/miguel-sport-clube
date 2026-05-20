@@ -53,21 +53,35 @@ const Dashboard = () => {
                                         <strong>📍 Local:</strong> {t.local} <br/>
 
                                         {/* Os Botões de Presença */}
-                                        <div style={{ marginTop: '10px' }}>
-                                            <span style={{ marginRight: '10px', color: 'darkslategray', fontWeight: 'bold' }}>Marcar presença:</span>
-                                            <button
-                                                onClick={() => confirmarIda(t.id, true)}
-                                                style={{ backgroundColor: 'mediumseagreen', color: 'white', border: 'none', padding: '6px 12px', borderRadius: '4px', cursor: 'pointer', marginRight: '8px' }}
-                                            >
-                                                Vou
-                                            </button>
-                                            <button
-                                                onClick={() => confirmarIda(t.id, false)}
-                                                style={{ backgroundColor: 'tomato', color: 'white', border: 'none', padding: '6px 12px', borderRadius: '4px', cursor: 'pointer' }}
-                                            >
-                                                Não Vou
-                                            </button>
-                                        </div>
+
+                                        {/* A MAGIA PERMANENTE ACONTECE AQUI */}
+                                        { (treinosRespondidos.includes(t.id) ||
+                                          (t.confirmados && t.confirmados.includes(user.username)) ||
+                                          (t.ausentes && t.ausentes.includes(user.username))) ? (
+
+                                            <div style={{ marginTop: '10px', padding: '8px', backgroundColor: '#e6f4ea', color: '#137333', borderRadius: '4px', fontWeight: 'bold' }}>
+                                                Resposta registada
+                                            </div>
+
+                                        ) : (
+
+                                            <div style={{ marginTop: '10px' }}>
+                                                <span style={{ marginRight: '10px', color: 'darkslategray', fontWeight: 'bold' }}>Marcar presença:</span>
+                                                <button
+                                                    onClick={() => confirmarIda(t.id, true)}
+                                                    style={{ backgroundColor: 'mediumseagreen', color: 'white', border: 'none', padding: '6px 12px', borderRadius: '4px', cursor: 'pointer', marginRight: '8px' }}
+                                                >
+                                                    Presente
+                                                </button>
+                                                <button
+                                                    onClick={() => confirmarIda(t.id, false)}
+                                                    style={{ backgroundColor: 'tomato', color: 'white', border: 'none', padding: '6px 12px', borderRadius: '4px', cursor: 'pointer' }}
+                                                >
+                                                    Não Presente
+                                                </button>
+                                            </div>
+
+                                        )}
                                     </li>
                                 ))}
                             </ul>
@@ -81,7 +95,7 @@ const Dashboard = () => {
                 <section className="container3" style={{ flex: '1', minWidth: '300px', backgroundColor: 'cornflowerblue' }}>
                     <h2 style={{ color: 'white' }}>Última Convocatória & Estatísticas</h2>
                     <div style={{ backgroundColor: 'white', padding: '20px', borderRadius: '8px', textAlign: 'center' }}>
-                        <p><em>(Em breve: Dados das convocatórias do Ivo)</em></p>
+                        <p><em>(ivoxxxxx)</em></p>
                     </div>
                 </section>
 

@@ -16,4 +16,5 @@ urlpatterns = [
     path('api/logout/', views.logout_api, name='logout_api'),
     path('api/treinos/', views.proximos_treinos, name='proximos_treinos'),
     path('api/presenca/', views.responder_presenca, name='responder_presenca'),
+    path('api/registar/', views.registar_user, name='registar'),
 ]
