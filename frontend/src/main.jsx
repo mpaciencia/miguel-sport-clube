@@ -24,6 +24,7 @@ import RegistarResultado from './pages/RegistarResultado.jsx'
 // 4. Login e "segurança"
 import Login from "./pages/Login.jsx";
 import RotaProtegida from "./pages/RotaProtegida.jsx";
+import Registar from "./pages/Registar.jsx";
 
 createRoot(document.getElementById('root')).render(
 
@@ -43,6 +44,8 @@ createRoot(document.getElementById('root')).render(
                             <Dashboard />
                         </RotaProtegida>
                     } />
+                    <Route path="/registar" element={<Registar />} />
+
 
                     {/* --- Rotas Privadas (Staff) --- */}
                     <Route path="/staff/jogadores" element={

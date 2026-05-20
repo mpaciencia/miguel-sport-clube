@@ -1,5 +1,5 @@
 import { useState, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios'
 import { AuthContext } from "../context/AuthContext.jsx";
 
@@ -54,8 +54,21 @@ const Login = () => {
                             required
                         />
                     </div>
+                        <p style={{
+                            color: message.includes("sucesso") ? "mediumseagreen" : "tomato",
+                            fontWeight: "bold",
+                            margin: "15px 0 5px 0",
+                            fontSize: "0.95em"
+                        }}>
+                            {message}
+                        </p>
+
                     <button type="submit">Iniciar Sessão</button>
                 </form>
+
+                <p style={{ marginTop: '20px', fontSize: '0.9em', color: '#4a5568' }}>
+                    Não tens conta? <Link to="/registar" style={{ color: '#007bff', fontWeight: 'bold', textDecoration: 'none' }}>Regista-te aqui</Link>
+                </p>
             </div>
         </div>
     );

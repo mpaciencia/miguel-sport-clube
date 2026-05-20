@@ -184,13 +184,27 @@ def logout_api(request):
 @api_view(['GET'])
 def proximos_treinos(request):
     # vai à bd buscar tds os treinos
-    treinos = Treino.objects.all()
+    treinos = Treino.objects.all().order_by('data')
+    resultado=[]
 
-    # passa treinos pelo tradutos
-    serializer = TreinoSerializer(treinos, many=True)
+    for treino in treinos:
+        presencas = Presenca.objects.filter(treino=treino)
+
+        vao = [p.jogador.username for p in presencas if p.confirmacao == True]
+        n_vao = [p.jogador.username for p in presencas if p.confirmacao == False]
+
+        dados_treino = {
+            "id": treino.id,
+            "data": treino.data,
+            "hora": treino.hora,
+            "local": treino.local,
+            "confirmados": vao,
+            "ausentes": n_vao
+        }
+        resultado.append(dados_treino)
 
     # devolve a resposta para o react
-    return Response(serializer.data)
+    return Response(resultado)
 
 @api_view(['POST'])
 def responder_presenca(request):
@@ -201,8 +215,12 @@ def responder_presenca(request):
 
     # encontrar treino na bd
     try:
-        treino = Treino.objects.get(id=id_do_treino)
         jogador_logado = User.objects.get(username=username_recebido)
+    except Treino.DoesNotExist:
+        return Response({"message": "Treino não encontrado"})
+
+    try:
+        treino = Treino.objects.get(id=id_do_treino)
     except Treino.DoesNotExist:
         return Response({"message": "Treino não encontrado"})
 
@@ -220,26 +238,39 @@ def responder_presenca(request):
 
     return Response({"message": "A sua resposta foi guardada com sucesso!" }, status=status.HTTP_201_CREATED)
 
-@api_view(['GET'])
-def listar_treinos(request):
-    treinos = Treino.objects.all().order_by('data')
-    resultado=[]
 
-    for treino in treinos:
-        presencas = Presenca.objects.filter(treino=treino)
+@api_view(['POST'])
+def registar_user(request):
+    username = request.data.get('username')
+    email = request.data.get('email')
+    password = request.data.get('password')
+    codigo_acesso = request.data.get('codigo_acesso')
 
-        vao = [p.jogador.username for p in presencas if p.confirmacao is True]
-        n_vao = [p.jogador.username for p in presencas if p.confirmacao is False]
+    CODIGO_JOGADOR = "MSC26JOG"
+    CODIGO_STAFF = "MSC26STAFF"
 
-        dados_treino = {
-            "id": treino.id,
-            "data": treino.data,
-            "hora": treino.hora,
-            "local": treino.local,
-            "confirmados": vao,
-            "ausentes": n_vao
-        }
-        resultado.append(dados_treino)
+    if not username or not password or not email or not codigo_acesso:
+        return Response({"message": "Preenche os campos obrigatórios!"}, status=status.HTTP_400_BAD_REQUEST)
 
-    return Response(resultado)
+    if User.objects.filter(username=username).exists():
+        return Response({"message": "Nome de utilizador já existe!"}, status=status.HTTP_400_BAD_REQUEST)
+
+    if codigo_acesso == CODIGO_JOGADOR:
+        is_staff = False
+    elif codigo_acesso == CODIGO_STAFF:
+        is_staff = True
+    else:
+        return Response({"message": "Código de acesso inválido!"}, status=status.HTTP_400_BAD_REQUEST)
+
+    try:
+        novo_user = User.objects.create_user(username=username, password=password, email=email)
+        novo_user.is_staff = is_staff
+        novo_user.save()
+
+        return Response({"message": "Conta criada com sucesso!"}, status=status.HTTP_201_CREATED)
+
+    except Exception as e:
+        print(e)
+        return Response({"message": "Erro ao criar conta. Tente novamente!"}, status=status.HTTP_400_BAD_REQUEST)
+
 
