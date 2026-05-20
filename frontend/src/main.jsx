@@ -13,6 +13,7 @@ import StaffJogadores from "./pages/StaffJogadores.jsx"
 import Navbar from './pages/Navbar.jsx'
 import LandingPage from './pages/LandingPage.jsx'
 import Dashboard from "./pages/Dashboard.jsx";
+import CriarConvocatoria from './pages/CriarConvocatoria'
 
 // 3. Páginas do Domínio: Jogos e Classificação (Ivo)
 import Jogos from './pages/Jogos.jsx'
@@ -25,6 +26,7 @@ import RegistarJogo from './pages/RegistarJogo';
 // 4. Login e "segurança"
 import Login from "./pages/Login.jsx";
 import RotaProtegida from "./pages/RotaProtegida.jsx";
+import Registar from "./pages/Registar.jsx";
 
 createRoot(document.getElementById('root')).render(
     <AuthProvider>

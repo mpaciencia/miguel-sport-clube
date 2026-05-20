@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import StaffNavbar from './StaffNavbar';
 
 const URL_JOGOS = 'http://127.0.0.1:8000/api/jogos/'
 
@@ -20,62 +21,68 @@ function CriarJogo() {
       local,
       is_casa: isCasa
     }, { withCredentials: true })
-      .then(() => {
-        navigate('/jogos')
-      })
-      .catch(err => {
-        setErro('Erro ao criar jogo. Verifica se estás autenticado como staff.')
-        console.log(err)
-      })
+        .then(() => {
+          navigate('/jogos')
+        })
+        .catch(err => {
+          setErro('Erro ao criar jogo. Verifica se estás autenticado como staff.')
+          console.log(err)
+        })
   }
 
+
   return (
-    <div>
-      <h1>Criar Jogo</h1>
+      <>
+        <StaffNavbar />
+        <main className="container">
+          <div>
+            <h1>Criar Jogo</h1>
 
-      {erro && <p style={{ color: 'red' }}>{erro}</p>}
+            {erro && <p style={{ color: 'red' }}>{erro}</p>}
 
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Adversário:</label>
-          <input
-            type="text"
-            value={adversario}
-            onChange={e => setAdversario(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <label>Data e Hora:</label>
-          <input
-            type="datetime-local"
-            value={data}
-            onChange={e => setData(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <label>Local:</label>
-          <input
-            type="text"
-            value={local}
-            onChange={e => setLocal(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <label>
-            <input
-              type="checkbox"
-              checked={isCasa}
-              onChange={e => setIsCasa(e.target.checked)}
-            />
-            Jogo em casa
-          </label>
-        </div>
-        <button type="submit">Criar Jogo</button>
-      </form>
-    </div>
+            <form onSubmit={handleSubmit}>
+              <div>
+                <label>Adversário:</label>
+                <input
+                    type="text"
+                    value={adversario}
+                    onChange={e => setAdversario(e.target.value)}
+                    required
+                />
+              </div>
+              <div>
+                <label>Data e Hora:</label>
+                <input
+                    type="datetime-local"
+                    value={data}
+                    onChange={e => setData(e.target.value)}
+                    required
+                />
+              </div>
+              <div>
+                <label>Local:</label>
+                <input
+                    type="text"
+                    value={local}
+                    onChange={e => setLocal(e.target.value)}
+                    required
+                />
+              </div>
+              <div>
+                <label>
+                  <input
+                      type="checkbox"
+                      checked={isCasa}
+                      onChange={e => setIsCasa(e.target.checked)}
+                  />
+                  Jogo em casa
+                </label>
+              </div>
+              <button type="submit">Criar Jogo</button>
+            </form>
+          </div>
+        </main>
+      </>
   )
 }
 
