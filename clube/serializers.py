@@ -1,13 +1,24 @@
 from rest_framework import serializers
+from django.db.models import Sum
 
 from .models import Jogador, Jogo, Convocatoria, Estatistica, ClassificacaoEquipa, Treino
 
 
 class JogadorSerializer(serializers.ModelSerializer):
+    golos = serializers.SerializerMethodField()
+    assistencias = serializers.SerializerMethodField()
 
     class Meta:
         model = Jogador
-        fields = ('id', 'nome', 'numero_camisola', 'posicao', 'data_nascimento', 'foto')
+        fields = ('id', 'nome', 'numero_camisola', 'posicao', 'data_nascimento', 'foto', 'golos', 'assistencias')
+
+    def get_golos(self, obj):
+        total = obj.estatisticas.aggregate(Sum('golos'))['golos__sum']
+        return total if total is not None else 0
+
+    def get_assistencias(self, obj):
+        total = obj.estatisticas.aggregate(Sum('assistencias'))['assistencias__sum']
+        return total if total is not None else 0
 
 
 class JogoSerializer(serializers.ModelSerializer):

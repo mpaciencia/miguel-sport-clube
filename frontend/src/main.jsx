@@ -21,11 +21,42 @@ import CriarJogo from './pages/CriarJogo.jsx'
 import RegistarResultado from './pages/RegistarResultado.jsx'
 import CriarConvocatoria from './pages/CriarConvocatoria'
 import RegistarJogo from './pages/RegistarJogo';
+import CriarTreino from './pages/CriarTreino.jsx';
 
 // 4. Login e "segurança"
 import Login from "./pages/Login.jsx";
 import RotaProtegida from "./pages/RotaProtegida.jsx";
 import Registar from "./pages/Registar.jsx";
+import axios from 'axios';
+
+// 1. Diz ao Axios para enviar sempre os cookies (essencial para as sessões do Django)
+axios.defaults.withCredentials = true;
+
+// 2. Intercetor para garantir que o token CSRF é sempre enviado, mesmo em pedidos cross-origin (localhost:5173 para localhost:8000)
+axios.interceptors.request.use(config => {
+    const getCookie = (name) => {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    };
+    
+    const csrfToken = getCookie('csrftoken');
+    if (csrfToken) {
+        config.headers['X-CSRFToken'] = csrfToken;
+    }
+    return config;
+}, error => {
+    return Promise.reject(error);
+});
 
 createRoot(document.getElementById('root')).render(
     <AuthProvider>
@@ -39,6 +70,7 @@ createRoot(document.getElementById('root')).render(
                 <Route path="/equipa/:id" element={<PerfilJogador/>}/>
                 <Route path="/jogos" element={<Jogos/>}/>
                 <Route path="/classificacao" element={<Classificacao/>}/>
+                <Route path="/registar_user" element={<Registar/>}/>
                 <Route path="/dashboard" element={
                     <RotaProtegida>
                         <Dashboard/>
@@ -69,6 +101,11 @@ createRoot(document.getElementById('root')).render(
                 <Route path="/staff/jogos/registar" element={
                     <RotaProtegida apenasStaff={true}>
                         <RegistarJogo/>
+                    </RotaProtegida>
+                }/>
+                <Route path="/staff/treinos/novo" element={
+                    <RotaProtegida apenasStaff={true}>
+                        <CriarTreino/>
                     </RotaProtegida>
                 }/>
             </Routes>

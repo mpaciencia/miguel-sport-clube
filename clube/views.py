@@ -5,6 +5,11 @@ from rest_framework.decorators import api_view, parser_classes
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from rest_framework.response import Response
 
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework.decorators import authentication_classes, permission_classes
+from rest_framework.permissions import AllowAny
+from django.middleware.csrf import get_token
+
 from .models import Jogador, Jogo, Convocatoria, Estatistica, ClassificacaoEquipa, Treino, Presenca
 from .serializers import (
     JogadorSerializer,
@@ -69,7 +74,46 @@ def jogos_list(request):
         return Response({'msg': 'Sem permissão'}, status=status.HTTP_403_FORBIDDEN)
     serializer = JogoSerializer(data=request.data)
     if serializer.is_valid():
-        serializer.save()
+        jogo = serializer.save()
+        
+        # --- ATUALIZAR CLASSIFICAÇÃO AUTOMATICAMENTE ---
+        if jogo.golos_nos is not None and jogo.golos_adv is not None:
+            try:
+                equipa_nos = ClassificacaoEquipa.objects.filter(is_nos=True).first()
+                if not equipa_nos:
+                    equipa_nos = ClassificacaoEquipa.objects.create(nome="Miguel Sport Clube", is_nos=True)
+                
+                equipa_adv, created = ClassificacaoEquipa.objects.get_or_create(nome=jogo.adversario, defaults={'is_nos': False})
+                
+                # Atualizar Jogos e Golos
+                equipa_nos.jogos += 1
+                equipa_nos.golos_marcados += jogo.golos_nos
+                equipa_nos.golos_sofridos += jogo.golos_adv
+                
+                equipa_adv.jogos += 1
+                equipa_adv.golos_marcados += jogo.golos_adv
+                equipa_adv.golos_sofridos += jogo.golos_nos
+                
+                # Atualizar Vitórias/Empates/Derrotas e Pontos
+                if jogo.golos_nos > jogo.golos_adv:
+                    equipa_nos.vitorias += 1
+                    equipa_nos.pontos += 3
+                    equipa_adv.derrotas += 1
+                elif jogo.golos_nos < jogo.golos_adv:
+                    equipa_nos.derrotas += 1
+                    equipa_adv.vitorias += 1
+                    equipa_adv.pontos += 3
+                else:
+                    equipa_nos.empates += 1
+                    equipa_nos.pontos += 1
+                    equipa_adv.empates += 1
+                    equipa_adv.pontos += 1
+                    
+                equipa_nos.save()
+                equipa_adv.save()
+            except Exception as e:
+                print("Erro ao atualizar classificacao:", e)
+                
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -154,7 +198,10 @@ def classificacao_list(request):
     serializer = ClassificacaoSerializer(equipas, many=True)
     return Response(serializer.data)
 
+@csrf_exempt
 @api_view(['POST'])
+@authentication_classes([])
+@permission_classes([AllowAny])
 def login_api(request):
 
     #react envia dados
@@ -166,6 +213,7 @@ def login_api(request):
 
     if user is not None:
         login(request, user)
+        get_token(request)
 
         #devolver msg ao react em json
         return Response({
@@ -176,35 +224,48 @@ def login_api(request):
     else:
         return Response({"erro":"username ou password incorretos." }, status=status.HTTP_400_BAD_REQUEST)
 
+@csrf_exempt
 @api_view(['POST'])
+@authentication_classes([])
+@permission_classes([AllowAny])
 def logout_api(request):
     logout(request)
     return Response({"Logout feito com sucesso." }, status=status.HTTP_200_OK)
 
-@api_view(['GET'])
+@api_view(['GET', 'POST'])
 def proximos_treinos(request):
-    # vai à bd buscar tds os treinos
-    treinos = Treino.objects.all().order_by('data')
-    resultado=[]
+    if request.method == 'GET':
+        # vai à bd buscar tds os treinos
+        treinos = Treino.objects.all().order_by('data')
+        resultado=[]
 
-    for treino in treinos:
-        presencas = Presenca.objects.filter(treino=treino)
+        for treino in treinos:
+            presencas = Presenca.objects.filter(treino=treino)
 
-        vao = [p.jogador.username for p in presencas if p.confirmacao == True]
-        n_vao = [p.jogador.username for p in presencas if p.confirmacao == False]
+            vao = [p.jogador.username for p in presencas if p.confirmacao == True]
+            n_vao = [p.jogador.username for p in presencas if p.confirmacao == False]
 
-        dados_treino = {
-            "id": treino.id,
-            "data": treino.data,
-            "hora": treino.hora,
-            "local": treino.local,
-            "confirmados": vao,
-            "ausentes": n_vao
-        }
-        resultado.append(dados_treino)
+            dados_treino = {
+                "id": treino.id,
+                "data": treino.data,
+                "hora": treino.hora,
+                "local": treino.local,
+                "confirmados": vao,
+                "ausentes": n_vao
+            }
+            resultado.append(dados_treino)
 
-    # devolve a resposta para o react
-    return Response(resultado)
+        # devolve a resposta para o react
+        return Response(resultado)
+
+    elif request.method == 'POST':
+        if not request.user.is_staff:
+            return Response({'msg': 'Sem permissão'}, status=status.HTTP_403_FORBIDDEN)
+        serializer = TreinoSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
 def responder_presenca(request):
@@ -239,7 +300,10 @@ def responder_presenca(request):
     return Response({"message": "A sua resposta foi guardada com sucesso!" }, status=status.HTTP_201_CREATED)
 
 
+@csrf_exempt
 @api_view(['POST'])
+@authentication_classes([])
+@permission_classes([AllowAny])
 def registar_user(request):
     username = request.data.get('username')
     email = request.data.get('email')

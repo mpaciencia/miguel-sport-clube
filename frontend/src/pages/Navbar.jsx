@@ -53,10 +53,22 @@ function Navbar() {
                         <li>
                             <NavLink
                                 to="/staff/jogadores"
-                                className={({ isActive }) => isActive ? 'navlink ativo' : 'navlink'}
+                                className={({ isActive }) => isActive ? 'nav-link ativo' : 'nav-link'}
                                 style={{ color: 'darkorange' }}
                             >
                                 Painel de Staff
+                            </NavLink>
+                        </li>
+                    )}
+
+                    { user !== null && user.is_staff == false && (
+                        <li>
+                            <NavLink
+                                to="/dashboard"
+                                className={({ isActive }) => isActive ? 'nav-link ativo' : 'nav-link'}
+                                style={{ color: '#007bff' }}
+                            >
+                                Marcar Treinos
                             </NavLink>
                         </li>
                     )}

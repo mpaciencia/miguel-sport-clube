@@ -14,19 +14,13 @@ function StaffNavbar() {
                 to="/staff/jogos/registar"
                 className={({ isActive }) => isActive ? 'staff-sub-link ativo' : 'staff-sub-link'}
             >
-                Criar Jogo
+                Registar Jogo
             </NavLink>
             <NavLink
-                to="/staff/convocatoria/nova"
+                to="/staff/treinos/novo"
                 className={({ isActive }) => isActive ? 'staff-sub-link ativo' : 'staff-sub-link'}
             >
-                Nova Convocatória
-            </NavLink>
-            <NavLink
-                to="/staff/jogos/resultado"
-                className={({ isActive }) => isActive ? 'staff-sub-link ativo' : 'staff-sub-link'}
-            >
-                Registar Resultado
+                Adicionar Treino
             </NavLink>
         </div>
     );

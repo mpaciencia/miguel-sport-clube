@@ -17,11 +17,13 @@ function RegistarJogo() {
     const [listaJogadores, setListaJogadores] = useState([]);
     // O estado das estatísticas é um array de objetos. Começa vazio.
     const [estatisticas, setEstatisticas] = useState([]);
+    const [listaEquipas, setListaEquipas] = useState([]);
 
     // const navigate = useNavigate();
 
     // 3. Buscar os jogadores ao Django quando o componente é montado
     useEffect(() => {
+        // Fetch jogadores
         axios.get('http://localhost:8000/api/jogadores/')
             .then(response => {
                 setListaJogadores(response.data);
@@ -29,7 +31,25 @@ function RegistarJogo() {
             .catch(error => {
                 console.error("Erro ao carregar jogadores:", error);
             });
+            
+        // Fetch equipas da classificacao
+        axios.get('http://localhost:8000/api/classificacao/')
+            .then(response => {
+                setListaEquipas(response.data);
+            })
+            .catch(error => {
+                console.error("Erro ao carregar equipas:", error);
+            });
     }, []);
+
+    // 3.5 Auto-preencher o local se for em casa
+    useEffect(() => {
+        if (isCasa) {
+            setLocal('Pavilhão do Cacém');
+        } else if (local === 'Pavilhão do Cacém') {
+            setLocal('');
+        }
+    }, [isCasa]);
 
     // 4. Função para adicionar uma nova linha de estatística em branco
     const adicionarLinhaEstatistica = () => {
@@ -100,7 +120,17 @@ function RegistarJogo() {
                         <fieldset>
                             <legend>Dados do Jogo</legend>
                             <label>Adversário:</label>
-                            <input type="text" value={adversario} onChange={(e) => setAdversario(e.target.value)} required />
+                            <select value={adversario} onChange={(e) => setAdversario(e.target.value)} required>
+                                <option value="">Selecione o adversário...</option>
+                                {listaEquipas.map(equipa => {
+                                    if (equipa.is_nos) return null; // Esconder a nossa própria equipa
+                                    return (
+                                        <option key={equipa.id} value={equipa.nome}>
+                                            {equipa.nome}
+                                        </option>
+                                    );
+                                })}
+                            </select>
 
                             <label>Data:</label>
                             <input type="datetime-local" value={dataJogo} onChange={(e) => setDataJogo(e.target.value)} required />

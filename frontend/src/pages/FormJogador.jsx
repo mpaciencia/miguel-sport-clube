@@ -91,7 +91,11 @@ function FormJogador({ onJogadorAtualizado, jogadorEditando, setJogadorEditando 
                 })
                 .catch(error => {
                     console.error("Erro ao atualizar:", error.response?.data);
-                    setErro('Erro ao atualizar jogador.');
+                    let errMsg = 'Erro ao atualizar jogador.';
+                    if (error.response?.data) {
+                        errMsg = Object.entries(error.response.data).map(([k, v]) => `${k}: ${v}`).join(' | ');
+                    }
+                    setErro(errMsg);
                 });
         } else {
             // Modo Criação: Método POST com FormData
@@ -107,7 +111,11 @@ function FormJogador({ onJogadorAtualizado, jogadorEditando, setJogadorEditando 
                 })
                 .catch(error => {
                     console.error("Erro ao adicionar:", error.response?.data);
-                    setErro('Erro ao adicionar jogador.');
+                    let errMsg = 'Erro ao adicionar jogador.';
+                    if (error.response?.data) {
+                        errMsg = Object.entries(error.response.data).map(([k, v]) => `${k}: ${v}`).join(' | ');
+                    }
+                    setErro(errMsg);
                 });
         }
     };
