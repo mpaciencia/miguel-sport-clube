@@ -16,7 +16,7 @@ function PerfilJogador() {
             .catch(err => console.error("Erro ao carregar perfil:", err))
     }, [id])
 
-    if (!jogador) return <div className="perfil-container">A carregar...</div>
+    if (!jogador) return <div className="perfil-container">A carregar dados do jogador...</div>
 
     return (
         <div className="perfil-container">
@@ -45,6 +45,11 @@ function PerfilJogador() {
                 <p><strong>Número:</strong> #{jogador.numero_camisola}</p>
                 <p><strong>Posição:</strong> {jogador.posicao}</p>
                 <p><strong>Data de nascimento:</strong> {new Date(jogador.data_nascimento).toLocaleDateString('pt-PT')}</p>
+                <div className="estatisticas-box">
+                    <h3>Estatísticas da Época</h3>
+                    <p>Golos: {jogador.golos}</p>
+                    <p>Assistências: {jogador.assistencias}</p>
+                </div>
             </div>
         </div>
     )

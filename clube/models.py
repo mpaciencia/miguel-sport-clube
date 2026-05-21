@@ -19,6 +19,18 @@ class Jogador(models.Model):
     # Se não houver foto, o campo fica vazio (blank=True, null=True)
     foto = models.ImageField(upload_to='fotos_jogadores/', blank=True, null=True)
 
+    @property
+    def golos_totais(self):
+        # Vai buscar todas as estatísticas deste jogador e soma os golos
+        total = self.estatisticas.aggregate(sum('golos'))['golos__sum']
+        return total or 0  # Retorna 0 se for None (se não tiver jogos)
+
+    @property
+    def assistencias_totais(self):
+        # Vai buscar todas as estatísticas deste jogador e soma as assistências
+        total = self.estatisticas.aggregate(sum('assistencias'))['assistencias__sum']
+        return total or 0
+
     def __str__(self):
         return f"{self.numero_camisola} - {self.nome}"
 

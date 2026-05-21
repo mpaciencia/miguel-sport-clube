@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import StaffNavbar from './StaffNavbar';
 // Se usares o react-router-dom para redirecionar após gravar:
 // import { useNavigate } from 'react-router-dom';
 
@@ -88,84 +89,89 @@ function RegistarJogo() {
     };
 
     return (
-        <div className="container">
-            <h2>Registar Resultado do Jogo</h2>
-            <form onSubmit={handleSubmit}>
+        <>
+            <StaffNavbar />
+            <main className="container">
+                <div className="container">
+                    <h2>Registar Resultado do Jogo</h2>
+                    <form onSubmit={handleSubmit}>
 
-                {/* --- DADOS DO JOGO --- */}
-                <fieldset>
-                    <legend>Dados do Jogo</legend>
-                    <label>Adversário:</label>
-                    <input type="text" value={adversario} onChange={(e) => setAdversario(e.target.value)} required />
+                        {/* --- DADOS DO JOGO --- */}
+                        <fieldset>
+                            <legend>Dados do Jogo</legend>
+                            <label>Adversário:</label>
+                            <input type="text" value={adversario} onChange={(e) => setAdversario(e.target.value)} required />
 
-                    <label>Data:</label>
-                    <input type="datetime-local" value={dataJogo} onChange={(e) => setDataJogo(e.target.value)} required />
+                            <label>Data:</label>
+                            <input type="datetime-local" value={dataJogo} onChange={(e) => setDataJogo(e.target.value)} required />
 
-                    <label>Local:</label>
-                    <input type="text" value={local} onChange={(e) => setLocal(e.target.value)} required />
+                            <label>Local:</label>
+                            <input type="text" value={local} onChange={(e) => setLocal(e.target.value)} required />
 
-                    <label>Em Casa?</label>
-                    <input type="checkbox" checked={isCasa} onChange={(e) => setIsCasa(e.target.checked)} />
+                            <label>Em Casa?</label>
+                            <input type="checkbox" checked={isCasa} onChange={(e) => setIsCasa(e.target.checked)} />
 
-                    <br/><br/>
-                    <label>Golos Nós:</label>
-                    <input type="number" value={golosNos} onChange={(e) => setGolosNos(e.target.value)} required />
+                            <br/><br/>
+                            <label>Golos Nós:</label>
+                            <input type="number" value={golosNos} onChange={(e) => setGolosNos(e.target.value)} required />
 
-                    <label>Golos Adversário:</label>
-                    <input type="number" value={golosAdv} onChange={(e) => setGolosAdv(e.target.value)} required />
-                </fieldset>
+                            <label>Golos Adversário:</label>
+                            <input type="number" value={golosAdv} onChange={(e) => setGolosAdv(e.target.value)} required />
+                        </fieldset>
 
-                <br/>
+                        <br/>
 
-                {/* --- ESTATÍSTICAS DOS JOGADORES --- */}
-                <fieldset>
-                    <legend>Estatísticas Individuais</legend>
-                    <button type="button" onClick={adicionarLinhaEstatistica}>
-                        + Adicionar Jogador
-                    </button>
+                        {/* --- ESTATÍSTICAS DOS JOGADORES --- */}
+                        <fieldset>
+                            <legend>Estatísticas Individuais</legend>
+                            <button type="button" onClick={adicionarLinhaEstatistica}>
+                                + Adicionar Jogador
+                            </button>
 
-                    {estatisticas.map((est, index) => (
-                        <div key={index} style={{ marginTop: '10px', padding: '10px', border: '1px solid #ccc' }}>
-                            <label>Jogador: </label>
-                            {/* Aqui está o Dropdown gerado dinamicamente */}
-                            <select
-                                value={est.jogador_id}
-                                onChange={(e) => atualizarEstatistica(index, 'jogador_id', e.target.value)}
-                                required
-                            >
-                                <option value="">Selecione um jogador...</option>
-                                {listaJogadores.map(jogador => (
-                                    <option key={jogador.id} value={jogador.id}>
-                                        {jogador.numero_camisola} - {jogador.nome} ({jogador.posicao})
-                                    </option>
-                                ))}
-                            </select>
+                            {estatisticas.map((est, index) => (
+                                <div key={index} style={{ marginTop: '10px', padding: '10px', border: '1px solid #ccc' }}>
+                                    <label>Jogador: </label>
+                                    {/* Aqui está o Dropdown gerado dinamicamente */}
+                                    <select
+                                        value={est.jogador_id}
+                                        onChange={(e) => atualizarEstatistica(index, 'jogador_id', e.target.value)}
+                                        required
+                                    >
+                                        <option value="">Selecione um jogador...</option>
+                                        {listaJogadores.map(jogador => (
+                                            <option key={jogador.id} value={jogador.id}>
+                                                {jogador.numero_camisola} - {jogador.nome} ({jogador.posicao})
+                                            </option>
+                                        ))}
+                                    </select>
 
-                            <label style={{ marginLeft: '10px' }}>Golos: </label>
-                            <input
-                                type="number"
-                                min="0"
-                                value={est.golos}
-                                onChange={(e) => atualizarEstatistica(index, 'golos', e.target.value)}
-                                style={{ width: '50px' }}
-                            />
+                                    <label style={{ marginLeft: '10px' }}>Golos: </label>
+                                    <input
+                                        type="number"
+                                        min="0"
+                                        value={est.golos}
+                                        onChange={(e) => atualizarEstatistica(index, 'golos', e.target.value)}
+                                        style={{ width: '50px' }}
+                                    />
 
-                            <label style={{ marginLeft: '10px' }}>Assistências: </label>
-                            <input
-                                type="number"
-                                min="0"
-                                value={est.assistencias}
-                                onChange={(e) => atualizarEstatistica(index, 'assistencias', e.target.value)}
-                                style={{ width: '50px' }}
-                            />
-                        </div>
-                    ))}
-                </fieldset>
+                                    <label style={{ marginLeft: '10px' }}>Assistências: </label>
+                                    <input
+                                        type="number"
+                                        min="0"
+                                        value={est.assistencias}
+                                        onChange={(e) => atualizarEstatistica(index, 'assistencias', e.target.value)}
+                                        style={{ width: '50px' }}
+                                    />
+                                </div>
+                            ))}
+                        </fieldset>
 
-                <br/>
-                <button type="submit">Guardar Tudo</button>
-            </form>
-        </div>
+                        <br/>
+                        <button type="submit">Guardar Tudo</button>
+                    </form>
+                </div>
+            </main>
+        </>
     );
 }
 

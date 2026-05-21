@@ -42,13 +42,13 @@ function CriarConvocatoria() {
       // Vai buscar as convocatórias que já existem para este jogo em específico
       // (Lembras-te que programaste este filtro no views.py?)
       axios.get(`${URL_CONVOCATORIAS}?jogo=${jogoSelecionado}`)
-        .then(response => {
+          .then(response => {
             // Extrai apenas os IDs dos jogadores que já estão convocados
             const idsJaConvocados = response.data.map(conv => conv.jogador)
             setSelecionados(idsJaConvocados)
             setSelecionadosIniciais(idsJaConvocados) // Guarda como referência inicial
-        })
-        .catch(err => console.log('Erro ao carregar convocatórias existentes', err))
+          })
+          .catch(err => console.log('Erro ao carregar convocatórias existentes', err))
     }
   }, [jogoSelecionado])
 
@@ -76,28 +76,31 @@ function CriarConvocatoria() {
 
     // Fazemos o POST apenas aos jogadores que adicionámos agora
     const pedidos = novosConvocados.map(jogadorId =>
-      axios.post(URL_CONVOCATORIAS, {
-        jogo: parseInt(jogoSelecionado),
-        jogador: jogadorId
-      }, { withCredentials: true }) // Nota: certifica-te de que o teu Django CORS aceita credentials
+        axios.post(URL_CONVOCATORIAS, {
+          jogo: parseInt(jogoSelecionado),
+          jogador: jogadorId
+        }, { withCredentials: true }) // Nota: certifica-te de que o teu Django CORS aceita credentials
     )
 
     Promise.all(pedidos)
-      .then(() => {
-        setSucesso('Convocatória criada com sucesso!')
-        setErro('')
-        // Atualiza a referência para que num 2º clique ele saiba que já estão gravados
-        setSelecionadosIniciais(selecionados)
-      })
-      .catch(err => {
-        setErro('Erro ao criar convocatória. Verifica as tuas permissões.')
-        console.log(err)
-      })
+        .then(() => {
+          setSucesso('Convocatória criada com sucesso!')
+          setErro('')
+          // Atualiza a referência para que num 2º clique ele saiba que já estão gravados
+          setSelecionadosIniciais(selecionados)
+        })
+        .catch(err => {
+          setErro('Erro ao criar convocatória. Verifica as tuas permissões.')
+          console.log(err)
+        })
   }
 
   return (
-    <div>
-      <h1>Criar / Editar Convocatória</h1>
+      <>
+        <StaffNavbar />
+        <main className="container">
+          <div>
+            <h1>Criar / Editar Convocatória</h1>
 
             {erro && <p style={{ color: 'red' }}>{erro}</p>}
             {sucesso && <p style={{ color: 'green' }}>{sucesso}</p>}
@@ -135,9 +138,11 @@ function CriarConvocatoria() {
                 ))}
               </div>
 
-        <button type="submit">Guardar Convocatória</button>
-      </form>
-    </div>
+              <button type="submit">Guardar Convocatória</button>
+            </form>
+          </div>
+        </main>
+      </>
   )
 }
 

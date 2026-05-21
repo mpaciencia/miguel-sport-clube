@@ -8,25 +8,25 @@ function StaffNavbar() {
                 to="/staff/jogadores"
                 className={({ isActive }) => isActive ? 'staff-sub-link ativo' : 'staff-sub-link'}
             >
-                🏃 Plantel e Treinos
+                Plantel e Treinos
             </NavLink>
             <NavLink
-                to="/staff/jogos/novo"
+                to="/staff/jogos/registar"
                 className={({ isActive }) => isActive ? 'staff-sub-link ativo' : 'staff-sub-link'}
             >
-                ⚽ Criar Jogo
+                Criar Jogo
             </NavLink>
             <NavLink
-                to="/staff/convocatorias/nova"
+                to="/staff/convocatoria/nova"
                 className={({ isActive }) => isActive ? 'staff-sub-link ativo' : 'staff-sub-link'}
             >
-                📋 Nova Convocatória
+                Nova Convocatória
             </NavLink>
             <NavLink
                 to="/staff/jogos/resultado"
                 className={({ isActive }) => isActive ? 'staff-sub-link ativo' : 'staff-sub-link'}
             >
-                🏆 Registar Resultado
+                Registar Resultado
             </NavLink>
         </div>
     );

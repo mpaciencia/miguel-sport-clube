@@ -4,9 +4,12 @@ from .models import Jogador, Jogo, Convocatoria, Estatistica, ClassificacaoEquip
 
 
 class JogadorSerializer(serializers.ModelSerializer):
+    golos = serializers.ReadOnlyField(source='golos_totais')
+    assistencias = serializers.ReadOnlyField(source='assistencias_totais')
+
     class Meta:
         model = Jogador
-        fields = ('id', 'nome', 'numero_camisola', 'posicao', 'data_nascimento', 'foto')
+        fields = ('id', 'nome', 'numero_camisola', 'posicao', 'data_nascimento', 'foto', 'golos', 'assistencias')
 
 
 class JogoSerializer(serializers.ModelSerializer):
