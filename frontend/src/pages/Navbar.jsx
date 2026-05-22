@@ -9,11 +9,12 @@ function Navbar() {
     const navigate = useNavigate();
 
     const clicarSair = () => {
-        axios.post('http://localhost:8000/api/logout/')
+        axios.get('http://localhost:8000/api/logout/', { withCredentials: true })
             .then(() => {
                 fazerLogout();
                 navigate('/'); // ir p home
-            });
+            })
+            .catch(error => console.log('Erro no logout', error));
     }
 
     return (

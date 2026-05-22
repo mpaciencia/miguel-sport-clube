@@ -19,12 +19,14 @@ const Login = () => {
         axios.post('http://localhost:8000/api/login/', {
             username: username,
             password: password
+        }, {
+            withCredentials: true  // ADICIONADO AQUI (Slide 10, pag 17)
         })
-        .then(response => {
-            fazerLogin(response.data);
-            setMessage("Login efetuado com sucesso!")
-            navigate(-1)
-        })
+            .then(response => {
+                fazerLogin(response.data);
+                setMessage("Login efetuado com sucesso!")
+                navigate(-1)
+            })
             .catch(error => {
                 setMessage("username ou password incorretos");
                 console.log(error);
@@ -56,15 +58,15 @@ const Login = () => {
                             required
                         />
                     </div>
-                        <p style={{
-                            color: message.includes("sucesso") ? "mediumseagreen" : "var(--cor-secundaria)",
-                            fontWeight: "bold",
-                            margin: "15px 0 5px 0",
-                            fontSize: "0.95em",
-                            textAlign: 'center'
-                        }}>
-                            {message}
-                        </p>
+                    <p style={{
+                        color: message.includes("sucesso") ? "mediumseagreen" : "var(--cor-secundaria)",
+                        fontWeight: "bold",
+                        margin: "15px 0 5px 0",
+                        fontSize: "0.95em",
+                        textAlign: 'center'
+                    }}>
+                        {message}
+                    </p>
 
                     <button type="submit" className="btn-submit">Iniciar Sessão</button>
                 </form>
