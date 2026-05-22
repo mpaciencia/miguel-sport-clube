@@ -15,7 +15,6 @@ const Dashboard = () => {
 
 
     useEffect(() => {
-        // Vê como o parêntesis só fecha no fim!
         axios.get('http://localhost:8000/api/treinos/', {withCredentials: true})
             .then(response => setTreinos(response.data))
             .catch(error => console.error("Erro ao carregar treinos:", error))
@@ -47,7 +46,6 @@ const Dashboard = () => {
             </header>
 
             <div style={{ display: 'flex', justifyContent: 'center' }}>
-                {/* A TUA SECÇÃO: PRÓXIMOS TREINOS E PRESENÇAS */}
                 <section className="form-card" style={{ maxWidth: '600px', width: '100%' }}>
                     <h2 style={{ color: 'var(--cor-primaria)' }}>Próximos Treinos</h2>
 
@@ -61,7 +59,6 @@ const Dashboard = () => {
                                         <strong style={{ color: 'var(--cor-texto)' }}>📍 Local:</strong> {t.local}
                                     </div>
 
-                                    {/* Os Botões de Presença */}
                                     { (treinosRespondidos.includes(t.id) ||
                                         (t.confirmados && t.confirmados.includes(user.username)) ||
                                         (t.ausentes && t.ausentes.includes(user.username))) ? (
