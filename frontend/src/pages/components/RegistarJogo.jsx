@@ -1,11 +1,9 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import StaffNavbar from './StaffNavbar.jsx';
-// Se usares o react-router-dom para redirecionar após gravar:
-// import { useNavigate } from 'react-router-dom';
+
 
 function RegistarJogo() {
-    // 1. Estados para os dados base do Jogo
     const [adversario, setAdversario] = useState('');
     const [dataJogo, setDataJogo] = useState('');
     const [local, setLocal] = useState('');
@@ -13,17 +11,13 @@ function RegistarJogo() {
     const [golosNos, setGolosNos] = useState(0);
     const [golosAdv, setGolosAdv] = useState(0);
 
-    // 2. Estados para os Jogadores e Estatísticas
     const [listaJogadores, setListaJogadores] = useState([]);
-    // O estado das estatísticas é um array de objetos. Começa vazio.
+
     const [estatisticas, setEstatisticas] = useState([]);
     const [listaEquipas, setListaEquipas] = useState([]);
 
-    // const navigate = useNavigate();
-
-    // 3. Buscar os jogadores ao Django quando o componente é montado
     useEffect(() => {
-        // Fetch jogadores
+        // fetch jogadores
         axios.get('http://localhost:8000/api/jogadores/')
             .then(response => {
                 setListaJogadores(response.data);
@@ -31,8 +25,8 @@ function RegistarJogo() {
             .catch(error => {
                 console.error("Erro ao carregar jogadores:", error);
             });
-            
-        // Fetch equipas da classificacao
+
+        // fetch equipas da classificacao
         axios.get('http://localhost:8000/api/classificacao/')
             .then(response => {
                 setListaEquipas(response.data);
@@ -42,7 +36,7 @@ function RegistarJogo() {
             });
     }, []);
 
-    // 3.5 Auto-preencher o local se for em casa
+    // Auto-preencher o local se for em casa
     useEffect(() => {
         if (isCasa) {
             setLocal('Pavilhão do Cacém');
@@ -51,26 +45,19 @@ function RegistarJogo() {
         }
     }, [isCasa]);
 
-    // 4. Função para adicionar uma nova linha de estatística em branco
     const adicionarLinhaEstatistica = () => {
         setEstatisticas([...estatisticas, { jogador_id: '', golos: 0, assistencias: 0 }]);
     };
 
-    // 5. Função para atualizar uma linha de estatística específica
     const atualizarEstatistica = (index, campo, valor) => {
-        // Criar uma cópia do array atual
         const novasEstatisticas = [...estatisticas];
-        // Atualizar o campo (jogador_id, golos ou assistencias) da linha correspondente
         novasEstatisticas[index][campo] = valor;
-        // Guardar o array atualizado no estado
         setEstatisticas(novasEstatisticas);
     };
 
-    // 6. Submissão do Formulário
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        // Passo A: Criar o Jogo
         const dadosJogo = {
             adversario: adversario,
             data: dataJogo,
@@ -84,10 +71,8 @@ function RegistarJogo() {
             .then(response => {
                 const jogoCriadoId = response.data.id;
 
-                // Passo B: Gravar as estatísticas usando o ID do novo jogo
-                // Fazemos um loop pelo array de estatisticas e enviamos um POST por cada uma
                 estatisticas.forEach(est => {
-                    if (est.jogador_id !== '') { // Só envia se tiver um jogador selecionado
+                    if (est.jogador_id !== '') {
                         const dadosEst = {
                             jogo: jogoCriadoId,
                             jogador: est.jogador_id,
@@ -100,7 +85,6 @@ function RegistarJogo() {
                 });
 
                 alert("Jogo e estatísticas registados com sucesso!");
-                // navigate('/calendario'); // Descomentar para redirecionar
             })
             .catch(error => {
                 console.error("Erro ao criar jogo:", error);
