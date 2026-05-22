@@ -20,7 +20,7 @@ const Login = () => {
             username: username,
             password: password
         }, {
-            withCredentials: true  // ADICIONADO AQUI (Slide 10, pag 17)
+            withCredentials: true
         })
             .then(response => {
                 fazerLogin(response.data);
