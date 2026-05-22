@@ -1,8 +1,8 @@
 import { useState, useEffect, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
-import './LandingPage.css'
-import { AuthContext } from "../context/AuthContext.jsx";
+import '../CSS/Landingpage.css'
+import { AuthContext } from "../../context/AuthContext.jsx";
 
 const JOGADORES_POR_PAGINA = 5
 const BASE_URL = 'http://localhost:8000'

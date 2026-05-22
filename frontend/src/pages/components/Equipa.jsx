@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from 'react-router-dom'
-import './Equipa.css'
+import '../CSS/Equipa.css'
 
 const BASE_URL = 'http://localhost:8000';
 

@@ -1,10 +1,10 @@
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
-import FormJogador from "../pages/FormJogador";
-import { AuthContext } from "../context/AuthContext.jsx";
+import FormJogador from "./FormJogador.jsx";
+import { AuthContext } from "../../context/AuthContext.jsx";
 // IMPORTA O NOVO COMPONENTE AQUI (ajusta o caminho se o colocaste noutra pasta)
-import StaffNavbar from "./StaffNavbar";
-import './StaffJogadores.css';
+import StaffNavbar from "./StaffNavbar.jsx";
+import '../CSS/StaffJogadores.css';
 
 function StaffJogadores() {
     const { user } = useContext(AuthContext)

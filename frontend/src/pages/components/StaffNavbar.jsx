@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import './StaffNavbar.css';
+import '../CSS/StaffNavbar.css';
 
 function StaffNavbar() {
     return (

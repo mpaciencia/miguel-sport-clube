@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
-import StaffNavbar from './StaffNavbar';
+import StaffNavbar from './StaffNavbar.jsx';
 
 function CriarTreino() {
     const [dataTreino, setDataTreino] = useState('');

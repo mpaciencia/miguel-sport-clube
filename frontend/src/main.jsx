@@ -7,26 +7,23 @@ import {AuthProvider} from "./context/AuthContext.jsx";
 import './index.css'
 
 // 2. Páginas do Domínio: Jogadores e Equipa (Manuel)
-import Equipa from './pages/Equipa.jsx'
-import PerfilJogador from './pages/PerfilJogador.jsx'
-import StaffJogadores from "./pages/StaffJogadores.jsx"
-import Navbar from './pages/Navbar.jsx'
-import LandingPage from './pages/LandingPage.jsx'
-import Dashboard from "./pages/Dashboard.jsx";
+import Equipa from './pages/components/Equipa.jsx'
+import PerfilJogador from './pages/components/PerfilJogador.jsx'
+import StaffJogadores from "./pages/components/StaffJogadores.jsx"
+import Navbar from './pages/components/Navbar.jsx'
+import LandingPage from './pages/components/Landingpage.jsx'
+import Dashboard from "./pages/components/Dashboard.jsx";
 
 // 3. Páginas do Domínio: Jogos e Classificação (Ivo)
-import Jogos from './pages/Jogos.jsx'
-import Classificacao from './pages/Classificacao.jsx'
-import CriarJogo from './pages/CriarJogo.jsx'
-import RegistarResultado from './pages/RegistarResultado.jsx'
-import CriarConvocatoria from './pages/CriarConvocatoria'
-import RegistarJogo from './pages/RegistarJogo';
-import CriarTreino from './pages/CriarTreino.jsx';
+import Jogos from './pages/components/Jogos.jsx'
+import Classificacao from './pages/components/Classificacao.jsx'
+import RegistarJogo from './pages/components/RegistarJogo.jsx';
+import CriarTreino from './pages/components/CriarTreino.jsx';
 
 // 4. Login e "segurança"
-import Login from "./pages/Login.jsx";
-import RotaProtegida from "./pages/RotaProtegida.jsx";
-import Registar from "./pages/Registar.jsx";
+import Login from "./pages/components/Login.jsx";
+import RotaProtegida from "./pages/components/RotaProtegida.jsx";
+import Registar from "./pages/components/Registar.jsx";
 import axios from 'axios';
 
 // 1. Diz ao Axios para enviar sempre os cookies (essencial para as sessões do Django)
@@ -81,21 +78,6 @@ createRoot(document.getElementById('root')).render(
                 <Route path="/staff/jogadores" element={
                     <RotaProtegida apenasStaff={true}>
                         <StaffJogadores/>
-                    </RotaProtegida>
-                }/>
-                <Route path="/staff/jogos/novo" element={
-                    <RotaProtegida apenasStaff={true}>
-                        <CriarJogo/>
-                    </RotaProtegida>
-                }/>
-                <Route path="/staff/jogos/resultado" element={
-                    <RotaProtegida apenasStaff={true}>
-                        <RegistarResultado/>
-                    </RotaProtegida>
-                }/>
-                <Route path="/staff/convocatoria/nova" element={
-                    <RotaProtegida apenasStaff={true}>
-                        <CriarConvocatoria/>
                     </RotaProtegida>
                 }/>
                 <Route path="/staff/jogos/registar" element={

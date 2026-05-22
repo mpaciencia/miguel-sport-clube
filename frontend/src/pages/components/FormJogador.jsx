@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import './FormJogador.css';
+import '../CSS/FormJogador.css';
 
 const BASE_URL = 'http://localhost:8000';
 

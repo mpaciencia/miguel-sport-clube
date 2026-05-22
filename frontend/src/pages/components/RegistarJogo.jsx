@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import StaffNavbar from './StaffNavbar';
+import StaffNavbar from './StaffNavbar.jsx';
 // Se usares o react-router-dom para redirecionar após gravar:
 // import { useNavigate } from 'react-router-dom';
 
