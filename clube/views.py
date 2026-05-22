@@ -5,11 +5,7 @@ from rest_framework.decorators import api_view, parser_classes
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-
-from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import authentication_classes, permission_classes
-from rest_framework.permissions import AllowAny
-from django.middleware.csrf import get_token
 
 from .models import Jogador, Jogo, Convocatoria, Estatistica, ClassificacaoEquipa, Treino, Presenca
 from .serializers import (
@@ -30,8 +26,6 @@ def jogadores(request):
         return Response(serializer.data)
 
     elif request.method == 'POST':
-        # O pedido pode vir como multipart/form-data (quando inclui foto)
-        # ou como JSON (quando não inclui foto). Ambos são suportados pelos parsers.
         serializer = JogadorSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -77,7 +71,7 @@ def jogos_list(request):
     if serializer.is_valid():
         jogo = serializer.save()
         
-        # --- ATUALIZAR CLASSIFICAÇÃO AUTOMATICAMENTE ---
+        # atualizar classificação autmaticamente
         if jogo.golos_nos is not None and jogo.golos_adv is not None:
             try:
                 equipa_nos = ClassificacaoEquipa.objects.filter(is_nos=True).first()
@@ -86,7 +80,7 @@ def jogos_list(request):
                 
                 equipa_adv, created = ClassificacaoEquipa.objects.get_or_create(nome=jogo.adversario, defaults={'is_nos': False})
                 
-                # Atualizar Jogos e Golos
+                # atualizar jogos e golos
                 equipa_nos.jogos += 1
                 equipa_nos.golos_marcados += jogo.golos_nos
                 equipa_nos.golos_sofridos += jogo.golos_adv
@@ -95,7 +89,7 @@ def jogos_list(request):
                 equipa_adv.golos_marcados += jogo.golos_adv
                 equipa_adv.golos_sofridos += jogo.golos_nos
                 
-                # Atualizar Vitórias/Empates/Derrotas e Pontos
+                # atualizar resultados e pontos
                 if jogo.golos_nos > jogo.golos_adv:
                     equipa_nos.vitorias += 1
                     equipa_nos.pontos += 3
@@ -206,27 +200,25 @@ def login_api(request):
     user = authenticate(request, username=username, password=password)
 
     if user is not None:
-        login(request, user) # Isto é o que cria a sessão real!
+        login(request, user)
         return Response({
             "mensagem": "Login feito com sucesso.",
             "username": user.username,
             "is_staff": user.is_staff
         })
     else:
-        # Nota: O slide 10 pag 13 indica usar o HTTP_401_UNAUTHORIZED para credenciais erradas
         return Response({"erro":"username ou password incorretos." }, status=status.HTTP_401_UNAUTHORIZED)
 
-@api_view(['GET']) # Nota: Logout costuma ser GET nos slides (Pág 14)
+@api_view(['GET'])
 def logout_api(request):
     logout(request)
     return Response({"mensagem": "Logout feito com sucesso." })
 
 
 @api_view(['GET', 'POST'])
-@permission_classes([IsAuthenticated])  # Permite a entrada a JOGADORES e STAFF com login feito
+@permission_classes([IsAuthenticated])
 def proximos_treinos(request):
     if request.method == 'GET':
-        # Qualquer jogador autenticado pode ver os próximos treinos
         treinos = Treino.objects.all().order_by('data')
         resultado = []
 
@@ -249,7 +241,7 @@ def proximos_treinos(request):
         return Response(resultado)
 
     elif request.method == 'POST':
-        # Bloqueio granular: apenas utilizadores da Staff podem criar novos treinos
+        #apenas staff pode criar novos treinos
         if not request.user.is_staff:
             return Response({'msg': 'Sem permissão'}, status=status.HTTP_403_FORBIDDEN)
 
@@ -260,12 +252,11 @@ def proximos_treinos(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
-@permission_classes([IsAuthenticated])  # Garante que só quem tem login feito pode responder [cite: 537]
+@permission_classes([IsAuthenticated])
 def responder_presenca(request):
     id_do_treino = request.data.get('id_treino')
     vou_ao_treino = request.data.get('presenteTreino')
 
-    # A MAGIA DA SESSÃO: O Django sabe automaticamente quem é o utilizador logado!
     jogador_logado = request.user
 
     try:
@@ -295,6 +286,7 @@ def registar_user(request):
     password = request.data.get('password')
     codigo_acesso = request.data.get('codigo_acesso')
 
+    # codigos de registo de jogador/staff
     CODIGO_JOGADOR = "MSC26JOG"
     CODIGO_STAFF = "MSC26STAFF"
 

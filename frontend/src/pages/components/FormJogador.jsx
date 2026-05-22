@@ -15,11 +15,9 @@ function FormJogador({ onJogadorAtualizado, jogadorEditando, setJogadorEditando 
     const [formData, setFormData] = useState(estadoInicial);
     const [erro, setErro] = useState('');
 
-    // Estado para a foto: o ficheiro selecionado e o URL de preview
     const [fotoFicheiro, setFotoFicheiro] = useState(null);
     const [previewUrl, setPreviewUrl] = useState('');
 
-    // Preenche o formulário automaticamente se clicarmos em "Editar"
     useEffect(() => {
         if (jogadorEditando) {
             setFormData({
@@ -28,13 +26,11 @@ function FormJogador({ onJogadorAtualizado, jogadorEditando, setJogadorEditando 
                 posicao: jogadorEditando.posicao,
                 data_nascimento: jogadorEditando.data_nascimento,
             });
-            // Mostra a foto atual do jogador como preview inicial
             setPreviewUrl(jogadorEditando.foto ? BASE_URL + jogadorEditando.foto : '');
         } else {
             setFormData(estadoInicial);
             setPreviewUrl('');
         }
-        // Ao mudar de jogador, limpa sempre o ficheiro selecionado
         setFotoFicheiro(null);
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [jogadorEditando]);
@@ -43,13 +39,10 @@ function FormJogador({ onJogadorAtualizado, jogadorEditando, setJogadorEditando 
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    // Handler para quando o utilizador seleciona uma imagem
     const handleFotoSelecionada = (e) => {
         const ficheiro = e.target.files[0];
         if (ficheiro) {
             setFotoFicheiro(ficheiro);
-            // URL.createObjectURL cria um URL temporário local para fazer a preview
-            // sem precisar de enviar o ficheiro ao servidor ainda
             setPreviewUrl(URL.createObjectURL(ficheiro));
         } else {
             setFotoFicheiro(null);
@@ -61,24 +54,17 @@ function FormJogador({ onJogadorAtualizado, jogadorEditando, setJogadorEditando 
         e.preventDefault();
         setErro('');
 
-        // Quando o pedido inclui um ficheiro, é obrigatório usar FormData
-        // em vez de um objeto JSON simples. O FormData permite enviar
-        // dados de texto e ficheiros binários no mesmo pedido (multipart/form-data).
         const dados = new FormData();
         dados.append('nome', formData.nome);
         dados.append('numero_camisola', formData.numero_camisola);
         dados.append('posicao', formData.posicao);
         dados.append('data_nascimento', formData.data_nascimento);
 
-        // Só adiciona o campo 'foto' se o utilizador selecionou um ficheiro novo.
-        // Se não selecionou, o campo é omitido e o Django mantém a foto existente
-        // (graças ao partial=True no serializer).
         if (fotoFicheiro) {
             dados.append('foto', fotoFicheiro);
         }
 
         if (jogadorEditando) {
-            // Modo Edição: Método PUT com FormData
             axios.put(`${BASE_URL}/api/jogadores/${jogadorEditando.id}/`, dados, {
                 headers: { 'Content-Type': 'multipart/form-data' }
             })
@@ -98,7 +84,6 @@ function FormJogador({ onJogadorAtualizado, jogadorEditando, setJogadorEditando 
                     setErro(errMsg);
                 });
         } else {
-            // Modo Criação: Método POST com FormData
             axios.post(`${BASE_URL}/api/jogadores/`, dados, {
                 headers: { 'Content-Type': 'multipart/form-data' }
             })

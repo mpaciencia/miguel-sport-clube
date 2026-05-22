@@ -21,7 +21,6 @@ function Equipa() {
                 {jogadores.map(jogador => (
                     <Link to={`/equipa/${jogador.id}`} key={jogador.id} style={{ textDecoration: 'none', color: 'inherit' }}>
                         <div className="jogador-card">
-                            {/* Foto do jogador: se existir, mostra-a; caso contrário, mostra um placeholder */}
                             {jogador.foto ? (
                                 <img
                                     src={BASE_URL + jogador.foto}

@@ -8,7 +8,6 @@ const RotaProtegida = ({ children, apenasStaff = false }) => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        // espera para verificar antes de tomar decisoes
         if (loading) return;
         if(user == null)
             navigate('/login');

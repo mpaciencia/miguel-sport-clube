@@ -38,7 +38,6 @@ function LandingPage() {
     return (
         <div className="landing-page">
 
-            {/* ── HERÓI ── */}
             <section className="hero">
                 <div className="hero-conteudo">
                     <p className="hero-subtitulo">Bem-vindo ao</p>
@@ -53,7 +52,6 @@ function LandingPage() {
             <div className="landing-grelha pagina-conteudo">
 
 
-                {/* ── PLANTEL — carrossel ── */}
                 <section className="bloco-secao bloco-plantel">
                     <h2 className="secao-titulo">O Nosso Plantel</h2>
 
@@ -78,7 +76,6 @@ function LandingPage() {
                                             key={jogador.id}
                                             className="jogador-card-landing"
                                         >
-                                            {/* Nova secção para a foto */}
                                             <div className="jogador-foto-container">
                                                 {jogador.foto ? (
                                                     <img
@@ -93,7 +90,6 @@ function LandingPage() {
                                                 )}
                                             </div>
 
-                                            {/* Secção da Informação do jogador */}
                                             <div className="jogador-info-landing">
                                                 <div className="jogador-numero">#{jogador.numero_camisola}</div>
                                                 <div className="jogador-nome">{jogador.nome}</div>
@@ -129,13 +125,11 @@ function LandingPage() {
                     )}
                 </section>
 
-                {/* ── LOGIN / REGISTO — placeholder para o Miguel ── */}
                 <section className="bloco-secao">
                     <h2 className="secao-titulo">Área Privada</h2>
 
                     <div style={{ backgroundColor: 'white', padding: '30px', borderRadius: '8px', textAlign: 'center', height: '100%' }}>
 
-                        {/* Renderização Condicional - A mesma lógica da NavBar */}
                         {user ? (
                             <>
                                 <div style={{ fontSize: '3em', marginBottom: '10px' }}>👋</div>
@@ -143,7 +137,6 @@ function LandingPage() {
                                     Bem-vindo de volta, {user.username}!
                                 </p>
 
-                                {/* O Link inteligente: se for staff vai para a gestão, se não, vai para o dashboard */}
                                 <Link
                                     to={user.is_staff ? "/staff/jogadores" : "/dashboard"}
                                     className="btn btn-hero"
