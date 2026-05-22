@@ -7,10 +7,16 @@ const Dashboard = () => {
     const [treinos, setTreinos] = useState([]);
 
     const [treinosRespondidos, setTreinosRespondidos] = useState([]);
+    const getCSRFToken = () => {
+        return document.cookie.split('; ')
+            .find(row => row.startsWith('csrftoken='))
+            ?.split('=')[1];
+    };
 
 
     useEffect(() => {
-        axios.get('http://localhost:8000/api/treinos/')
+        // Vê como o parêntesis só fecha no fim!
+        axios.get('http://localhost:8000/api/treinos/', {withCredentials: true})
             .then(response => setTreinos(response.data))
             .catch(error => console.error("Erro ao carregar treinos:", error))
     }, []);
@@ -19,8 +25,10 @@ const Dashboard = () => {
         setTreinosRespondidos([...treinosRespondidos, treinoId])
         axios.post('http://localhost:8000/api/presenca/', {
             id_treino: treinoId,
-            presenteTreino: resposta,
-            username: user.username
+            presenteTreino: resposta
+        }, {
+            withCredentials: true,
+            headers: { 'X-CSRFToken': getCSRFToken() }
         })
             .then(response => {
                 alert(response.data.message)
@@ -42,7 +50,7 @@ const Dashboard = () => {
                 {/* A TUA SECÇÃO: PRÓXIMOS TREINOS E PRESENÇAS */}
                 <section className="form-card" style={{ maxWidth: '600px', width: '100%' }}>
                     <h2 style={{ color: 'var(--cor-primaria)' }}>Próximos Treinos</h2>
-                    
+
                     {treinos.length > 0 ? (
                         <ul style={{ listStyle: 'none', padding: 0 }}>
                             {treinos.map(t => (
@@ -55,8 +63,8 @@ const Dashboard = () => {
 
                                     {/* Os Botões de Presença */}
                                     { (treinosRespondidos.includes(t.id) ||
-                                      (t.confirmados && t.confirmados.includes(user.username)) ||
-                                      (t.ausentes && t.ausentes.includes(user.username))) ? (
+                                        (t.confirmados && t.confirmados.includes(user.username)) ||
+                                        (t.ausentes && t.ausentes.includes(user.username))) ? (
 
                                         <div style={{ marginTop: '10px', padding: '10px', backgroundColor: '#e6f4ea', color: '#137333', borderRadius: '6px', fontWeight: 'bold', textAlign: 'center' }}>
                                             ✓ Resposta registada

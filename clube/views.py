@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from rest_framework.decorators import api_view, parser_classes
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import authentication_classes, permission_classes
@@ -198,46 +199,36 @@ def classificacao_list(request):
     serializer = ClassificacaoSerializer(equipas, many=True)
     return Response(serializer.data)
 
-@csrf_exempt
 @api_view(['POST'])
-@authentication_classes([])
-@permission_classes([AllowAny])
 def login_api(request):
-
-    #react envia dados
     username = request.data.get('username')
     password = request.data.get('password')
-
-    #verifica se existe user
     user = authenticate(request, username=username, password=password)
 
     if user is not None:
-        login(request, user)
-        get_token(request)
-
-        #devolver msg ao react em json
+        login(request, user) # Isto é o que cria a sessão real!
         return Response({
             "mensagem": "Login feito com sucesso.",
             "username": user.username,
             "is_staff": user.is_staff
         })
     else:
-        return Response({"erro":"username ou password incorretos." }, status=status.HTTP_400_BAD_REQUEST)
+        # Nota: O slide 10 pag 13 indica usar o HTTP_401_UNAUTHORIZED para credenciais erradas
+        return Response({"erro":"username ou password incorretos." }, status=status.HTTP_401_UNAUTHORIZED)
 
-@csrf_exempt
-@api_view(['POST'])
-@authentication_classes([])
-@permission_classes([AllowAny])
+@api_view(['GET']) # Nota: Logout costuma ser GET nos slides (Pág 14)
 def logout_api(request):
     logout(request)
-    return Response({"Logout feito com sucesso." }, status=status.HTTP_200_OK)
+    return Response({"mensagem": "Logout feito com sucesso." })
+
 
 @api_view(['GET', 'POST'])
+@permission_classes([IsAuthenticated])  # Permite a entrada a JOGADORES e STAFF com login feito
 def proximos_treinos(request):
     if request.method == 'GET':
-        # vai à bd buscar tds os treinos
+        # Qualquer jogador autenticado pode ver os próximos treinos
         treinos = Treino.objects.all().order_by('data')
-        resultado=[]
+        resultado = []
 
         for treino in treinos:
             presencas = Presenca.objects.filter(treino=treino)
@@ -255,12 +246,13 @@ def proximos_treinos(request):
             }
             resultado.append(dados_treino)
 
-        # devolve a resposta para o react
         return Response(resultado)
 
     elif request.method == 'POST':
+        # Bloqueio granular: apenas utilizadores da Staff podem criar novos treinos
         if not request.user.is_staff:
             return Response({'msg': 'Sem permissão'}, status=status.HTTP_403_FORBIDDEN)
+
         serializer = TreinoSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -268,25 +260,22 @@ def proximos_treinos(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])  # Garante que só quem tem login feito pode responder [cite: 537]
 def responder_presenca(request):
-    # dados enviados
     id_do_treino = request.data.get('id_treino')
     vou_ao_treino = request.data.get('presenteTreino')
-    username_recebido = request.data.get('username')
 
-    # encontrar treino na bd
-    try:
-        jogador_logado = User.objects.get(username=username_recebido)
-    except Treino.DoesNotExist:
-        return Response({"message": "Treino não encontrado"})
+    # A MAGIA DA SESSÃO: O Django sabe automaticamente quem é o utilizador logado!
+    jogador_logado = request.user
 
     try:
         treino = Treino.objects.get(id=id_do_treino)
     except Treino.DoesNotExist:
-        return Response({"message": "Treino não encontrado"})
+        return Response({"message": "Treino não encontrado"}, status=status.HTTP_404_NOT_FOUND)
 
-    # jogador ja respjndeu a este treino ?
+    # jogador ja respondeu a este treino?
     presenca_existente = Presenca.objects.filter(treino=treino, jogador=jogador_logado).first()
+
     if presenca_existente is not None:
         presenca_existente.confirmacao = vou_ao_treino
         presenca_existente.save()
@@ -297,13 +286,9 @@ def responder_presenca(request):
             confirmacao=vou_ao_treino,
         )
 
-    return Response({"message": "A sua resposta foi guardada com sucesso!" }, status=status.HTTP_201_CREATED)
+    return Response({"message": "A sua resposta foi guardada com sucesso!"}, status=status.HTTP_201_CREATED)
 
-
-@csrf_exempt
 @api_view(['POST'])
-@authentication_classes([])
-@permission_classes([AllowAny])
 def registar_user(request):
     username = request.data.get('username')
     email = request.data.get('email')
