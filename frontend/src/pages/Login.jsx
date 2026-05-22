@@ -32,42 +32,45 @@ const Login = () => {
     };
 
     return (
-        <div className="login-page-container">
-            <div className="login-card">
+        <div className="page-center">
+            <div className="form-card">
                 <h2>Entrar no Miguel Sport Clube</h2>
                 <form onSubmit={lidarComLogin}>
-                    <div style={{ textAlign: 'left' }}>
+                    <div className="form-group">
                         <label>Utilizador:</label>
                         <input
                             type="text"
+                            className="form-control"
                             value={username}
                             onChange={e => setUsername(e.target.value)}
                             required
                         />
                     </div>
-                    <div style={{ textAlign: 'left' }}>
+                    <div className="form-group">
                         <label>Palavra-passe:</label>
                         <input
                             type="password"
+                            className="form-control"
                             value={password}
                             onChange={e => setPassword(e.target.value)}
                             required
                         />
                     </div>
                         <p style={{
-                            color: message.includes("sucesso") ? "mediumseagreen" : "tomato",
+                            color: message.includes("sucesso") ? "mediumseagreen" : "var(--cor-secundaria)",
                             fontWeight: "bold",
                             margin: "15px 0 5px 0",
-                            fontSize: "0.95em"
+                            fontSize: "0.95em",
+                            textAlign: 'center'
                         }}>
                             {message}
                         </p>
 
-                    <button type="submit">Iniciar Sessão</button>
+                    <button type="submit" className="btn-submit">Iniciar Sessão</button>
                 </form>
 
-                <p style={{ marginTop: '20px', fontSize: '0.9em', color: '#4a5568' }}>
-                    Não tens conta? <Link to="/registar_user" style={{ color: '#007bff', fontWeight: 'bold', textDecoration: 'none' }}>Regista-te aqui</Link>
+                <p style={{ marginTop: '20px', fontSize: '0.9em', color: '#4a5568', textAlign: 'center' }}>
+                    Não tens conta? <Link to="/registar_user" style={{ color: 'var(--cor-primaria)', fontWeight: 'bold', textDecoration: 'underline' }}>Regista-te aqui</Link>
                 </p>
             </div>
         </div>

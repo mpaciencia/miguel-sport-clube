@@ -1,51 +1,65 @@
-.equipa-container {
-    padding: 24px;
-}
-
 .equipa-grelha {
     display: flex;
     flex-wrap: wrap;
-    gap: 16px;
+    gap: 24px;
+    justify-content: center;
 }
 
 .jogador-card {
-    border: 1px solid #ccc;
-    padding: 16px;
-    border-radius: 8px;
-    width: 150px;
+    background-color: var(--cor-branco);
+    border: 1px solid var(--cor-borda);
+    padding: 24px;
+    border-radius: 12px;
+    width: 200px;
     text-align: center;
-    transition: box-shadow 0.2s;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: var(--sombra-card);
+    border-bottom: 4px solid transparent;
 }
 
 .jogador-card:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transform: translateY(-5px);
+    box-shadow: var(--sombra-card-hover);
+    border-bottom: 4px solid var(--cor-secundaria); /* Linha vermelha no hover */
 }
 
 /* Foto real do jogador */
 .jogador-foto {
-    width: 100px;
-    height: 100px;
+    width: 120px;
+    height: 120px;
     object-fit: cover;
     border-radius: 50%;
-    margin-bottom: 8px;
-    border: 2px solid #ddd;
+    margin-bottom: 12px;
+    border: 3px solid var(--cor-primaria);
 }
 
 /* Placeholder quando não há foto: círculo com o número da camisola */
 .jogador-foto-placeholder {
-    width: 100px;
-    height: 100px;
+    width: 120px;
+    height: 120px;
     border-radius: 50%;
-    background-color: #e0e0e0;
+    background-color: #f4f5f7;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto 8px auto;
-    border: 2px solid #ccc;
+    margin: 0 auto 12px auto;
+    border: 3px solid var(--cor-primaria);
+    color: var(--cor-primaria);
 }
 
 .jogador-foto-placeholder span {
-    font-size: 1.8rem;
+    font-size: 2.5rem;
     font-weight: bold;
-    color: #666;
+}
+
+.jogador-card h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    color: var(--cor-primaria);
+}
+
+.jogador-card p {
+    margin: 4px 0;
+    color: var(--cor-texto-suave);
+    font-weight: 500;
 }

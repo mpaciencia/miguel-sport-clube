@@ -32,73 +32,64 @@ const Dashboard = () => {
     }
 
     return (
-        <main className="container">
-            <header style={{ textAlign: 'center', margin: '30px 0' }}>
+        <main className="pagina-conteudo">
+            <header style={{ textAlign: 'center', margin: '30px 0 50px' }}>
                 <h1>Bem-vindo, {user ? user.username : "Jogador"}! ⚽</h1>
-                <p>Aqui tens o resumo da tua atividade no Miguel Sport Clube.</p>
+                <p style={{ color: 'var(--cor-texto-suave)' }}>Aqui tens o resumo da tua atividade no Miguel Sport Clube.</p>
             </header>
 
-            <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
-
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
                 {/* A TUA SECÇÃO: PRÓXIMOS TREINOS E PRESENÇAS */}
-                <section className="container3" style={{ flex: '1', minWidth: '300px' }}>
-                    <h2 style={{ color: 'white' }}>Próximos Treinos</h2>
-                    <div style={{ backgroundColor: 'white', padding: '20px', borderRadius: '8px', textAlign: 'left' }}>
-                        {treinos.length > 0 ? (
-                            <ul style={{ listStyle: 'none', padding: 0 }}>
-                                {treinos.map(t => (
-                                    <li key={t.id} style={{ marginBottom: '15px', borderBottom: '1px solid #ccc', paddingBottom: '15px' }}>
-                                        <strong>📅 Data:</strong> {t.data} <br/>
-                                        <strong>⏰ Hora:</strong> {t.hora} <br/>
-                                        <strong>📍 Local:</strong> {t.local} <br/>
+                <section className="form-card" style={{ maxWidth: '600px', width: '100%' }}>
+                    <h2 style={{ color: 'var(--cor-primaria)' }}>Próximos Treinos</h2>
+                    
+                    {treinos.length > 0 ? (
+                        <ul style={{ listStyle: 'none', padding: 0 }}>
+                            {treinos.map(t => (
+                                <li key={t.id} style={{ marginBottom: '15px', borderBottom: '1px solid #dde1e9', paddingBottom: '15px' }}>
+                                    <div style={{ marginBottom: '10px' }}>
+                                        <strong style={{ color: 'var(--cor-texto)' }}>📅 Data:</strong> {t.data} <br/>
+                                        <strong style={{ color: 'var(--cor-texto)' }}>⏰ Hora:</strong> {t.hora} <br/>
+                                        <strong style={{ color: 'var(--cor-texto)' }}>📍 Local:</strong> {t.local}
+                                    </div>
 
-                                        {/* Os Botões de Presença */}
+                                    {/* Os Botões de Presença */}
+                                    { (treinosRespondidos.includes(t.id) ||
+                                      (t.confirmados && t.confirmados.includes(user.username)) ||
+                                      (t.ausentes && t.ausentes.includes(user.username))) ? (
 
-                                        {/* A MAGIA PERMANENTE ACONTECE AQUI */}
-                                        { (treinosRespondidos.includes(t.id) ||
-                                          (t.confirmados && t.confirmados.includes(user.username)) ||
-                                          (t.ausentes && t.ausentes.includes(user.username))) ? (
+                                        <div style={{ marginTop: '10px', padding: '10px', backgroundColor: '#e6f4ea', color: '#137333', borderRadius: '6px', fontWeight: 'bold', textAlign: 'center' }}>
+                                            ✓ Resposta registada
+                                        </div>
 
-                                            <div style={{ marginTop: '10px', padding: '8px', backgroundColor: '#e6f4ea', color: '#137333', borderRadius: '4px', fontWeight: 'bold' }}>
-                                                Resposta registada
-                                            </div>
+                                    ) : (
 
-                                        ) : (
+                                        <div style={{ marginTop: '15px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                            <span style={{ color: 'var(--cor-texto-suave)', fontWeight: 'bold' }}>Presença:</span>
+                                            <button
+                                                className="btn"
+                                                onClick={() => confirmarIda(t.id, true)}
+                                                style={{ backgroundColor: 'mediumseagreen', color: 'white', flex: 1 }}
+                                            >
+                                                Sim, vou
+                                            </button>
+                                            <button
+                                                className="btn"
+                                                onClick={() => confirmarIda(t.id, false)}
+                                                style={{ backgroundColor: 'tomato', color: 'white', flex: 1 }}
+                                            >
+                                                Não vou
+                                            </button>
+                                        </div>
 
-                                            <div style={{ marginTop: '10px' }}>
-                                                <span style={{ marginRight: '10px', color: 'darkslategray', fontWeight: 'bold' }}>Marcar presença:</span>
-                                                <button
-                                                    onClick={() => confirmarIda(t.id, true)}
-                                                    style={{ backgroundColor: 'mediumseagreen', color: 'white', border: 'none', padding: '6px 12px', borderRadius: '4px', cursor: 'pointer', marginRight: '8px' }}
-                                                >
-                                                    Presente
-                                                </button>
-                                                <button
-                                                    onClick={() => confirmarIda(t.id, false)}
-                                                    style={{ backgroundColor: 'tomato', color: 'white', border: 'none', padding: '6px 12px', borderRadius: '4px', cursor: 'pointer' }}
-                                                >
-                                                    Não Presente
-                                                </button>
-                                            </div>
-
-                                        )}
-                                    </li>
-                                ))}
-                            </ul>
-                        ) : (
-                            <p style={{ color: 'gray' }}>Não há treinos agendados de momento.</p>
-                        )}
-                    </div>
+                                    )}
+                                </li>
+                            ))}
+                        </ul>
+                    ) : (
+                        <div className="sem-dados" style={{ textAlign: 'center' }}>Não há treinos agendados de momento.</div>
+                    )}
                 </section>
-
-                {/* SECÇÃO DO IVO (Placeholder) */}
-                <section className="container3" style={{ flex: '1', minWidth: '300px', backgroundColor: 'cornflowerblue' }}>
-                    <h2 style={{ color: 'white' }}>Última Convocatória & Estatísticas</h2>
-                    <div style={{ backgroundColor: 'white', padding: '20px', borderRadius: '8px', textAlign: 'center' }}>
-                        <p><em>(ivoxxxxx)</em></p>
-                    </div>
-                </section>
-
             </div>
         </main>
     )

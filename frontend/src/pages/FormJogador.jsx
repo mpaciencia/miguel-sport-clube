@@ -129,70 +129,69 @@ function FormJogador({ onJogadorAtualizado, jogadorEditando, setJogadorEditando 
     };
 
     return (
-        <div className="formulario-card">
-            <h3>{jogadorEditando ? 'A Editar Jogador' : 'Adicionar Novo Jogador'}</h3>
+        <div className="form-card" style={{ maxWidth: '100%' }}>
+            <h2>{jogadorEditando ? 'A Editar Jogador' : 'Adicionar Novo Jogador'}</h2>
             {erro && <p className="erro-mensagem">{erro}</p>}
 
-            <form onSubmit={handleSubmit} className="form-jogador">
-                <label>
-                    Nome:
-                    <input type="text" name="nome" value={formData.nome} onChange={handleChange} required />
-                </label>
+            <form onSubmit={handleSubmit}>
+                <div className="form-group">
+                    <label>Nome:</label>
+                    <input className="form-control" type="text" name="nome" value={formData.nome} onChange={handleChange} required />
+                </div>
 
-                <label>
-                    Número da Camisola:
-                    <input type="number" name="numero_camisola" value={formData.numero_camisola} onChange={handleChange} required min="1" />
-                </label>
+                <div className="form-group">
+                    <label>Número da Camisola:</label>
+                    <input className="form-control" type="number" name="numero_camisola" value={formData.numero_camisola} onChange={handleChange} required min="1" />
+                </div>
 
-                <label>
-                    Posição:
-                    <select name="posicao" value={formData.posicao} onChange={handleChange}>
+                <div className="form-group">
+                    <label>Posição:</label>
+                    <select className="form-control" name="posicao" value={formData.posicao} onChange={handleChange}>
                         <option value="GR">Guarda Redes</option>
                         <option value="FX">Fixo</option>
                         <option value="AL">Ala</option>
                         <option value="PI">Pivot</option>
                     </select>
-                </label>
+                </div>
 
-                <label>
-                    Data de Nascimento:
-                    <input type="date" name="data_nascimento" value={formData.data_nascimento} onChange={handleChange} required />
-                </label>
+                <div className="form-group">
+                    <label>Data de Nascimento:</label>
+                    <input className="form-control" type="date" name="data_nascimento" value={formData.data_nascimento} onChange={handleChange} required />
+                </div>
 
-                {/* Campo de upload de foto */}
-                <label>
-                    Foto do Jogador:
+                <div className="form-group">
+                    <label>Foto do Jogador:</label>
                     <input
+                        className="form-control"
                         type="file"
                         accept="image/*"
                         onChange={handleFotoSelecionada}
-                        style={{ marginTop: '5px' }}
+                        style={{ padding: '8px' }}
                     />
-                </label>
+                </div>
 
-                {/* Preview da foto: mostra a foto selecionada ou a foto atual do jogador */}
                 {previewUrl && (
-                    <div className="foto-preview">
+                    <div style={{ textAlign: 'center', marginBottom: '20px' }}>
                         <img
                             src={previewUrl}
                             alt="Preview da foto"
-                            style={{ width: '100px', height: '100px', objectFit: 'cover', borderRadius: '8px', marginTop: '8px' }}
+                            style={{ width: '100px', height: '100px', objectFit: 'cover', borderRadius: '8px', border: '2px solid #dde1e9' }}
                         />
                         {!fotoFicheiro && jogadorEditando?.foto && (
-                            <p style={{ fontSize: '0.8rem', color: '#666', marginTop: '4px' }}>Foto atual</p>
+                            <p style={{ fontSize: '0.85rem', color: 'var(--cor-texto-suave)', marginTop: '4px' }}>Foto atual</p>
                         )}
                         {fotoFicheiro && (
-                            <p style={{ fontSize: '0.8rem', color: '#666', marginTop: '4px' }}>Nova foto selecionada</p>
+                            <p style={{ fontSize: '0.85rem', color: 'var(--cor-texto-suave)', marginTop: '4px' }}>Nova foto selecionada</p>
                         )}
                     </div>
                 )}
 
-                <div className="botoes-form">
-                    <button type="submit" className="btn-guardar">
+                <div style={{ display: 'flex', gap: '10px' }}>
+                    <button type="submit" className="btn-submit" style={{ flex: 1, marginTop: 0 }}>
                         {jogadorEditando ? 'Atualizar Jogador' : 'Guardar Jogador'}
                     </button>
                     {jogadorEditando && (
-                        <button type="button" className="btn-cancelar" onClick={cancelarEdicao}>
+                        <button type="button" className="btn btn-neutro" onClick={cancelarEdicao} style={{ flex: 1 }}>
                             Cancelar
                         </button>
                     )}

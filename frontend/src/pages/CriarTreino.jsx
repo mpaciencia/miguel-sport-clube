@@ -36,47 +36,44 @@ function CriarTreino() {
     return (
         <>
             <StaffNavbar />
-            <main className="container" style={{ marginTop: '20px' }}>
-                <div style={{ maxWidth: '500px', margin: '0 auto', background: '#fff', padding: '20px', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
-                    <h2 style={{ textAlign: 'center', marginBottom: '20px' }}>Adicionar Novo Treino</h2>
+            <main className="page-center">
+                <div className="form-card">
+                    <h2>Adicionar Novo Treino</h2>
                     
-                    {erro && <p style={{ color: 'red', textAlign: 'center' }}>{erro}</p>}
-                    {sucesso && <p style={{ color: 'green', textAlign: 'center' }}>{sucesso}</p>}
+                    {erro && <p className="erro-mensagem">{erro}</p>}
+                    {sucesso && <p style={{ color: 'green', textAlign: 'center', fontWeight: 'bold' }}>{sucesso}</p>}
 
-                    <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-                        <div>
-                            <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '5px' }}>Data do Treino:</label>
+                    <form onSubmit={handleSubmit}>
+                        <div className="form-group">
+                            <label>Data do Treino:</label>
                             <input 
                                 type="date" 
+                                className="form-control"
                                 value={dataTreino} 
                                 onChange={e => setDataTreino(e.target.value)} 
                                 required 
-                                style={{ width: '100%', padding: '8px', borderRadius: '4px', border: '1px solid #ccc' }}
                             />
                         </div>
-                        <div>
-                            <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '5px' }}>Hora:</label>
+                        <div className="form-group">
+                            <label>Hora:</label>
                             <input 
                                 type="time" 
+                                className="form-control"
                                 value={hora} 
                                 onChange={e => setHora(e.target.value)} 
                                 required 
-                                style={{ width: '100%', padding: '8px', borderRadius: '4px', border: '1px solid #ccc' }}
                             />
                         </div>
-                        <div>
-                            <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '5px' }}>Local:</label>
+                        <div className="form-group">
+                            <label>Local:</label>
                             <input 
                                 type="text" 
+                                className="form-control"
                                 value="Pavilhão do Cacém" 
                                 disabled 
-                                style={{ width: '100%', padding: '8px', borderRadius: '4px', border: '1px solid #ccc', backgroundColor: '#e9ecef' }}
                             />
                         </div>
-                        <button 
-                            type="submit" 
-                            style={{ padding: '10px', background: '#007bff', color: 'white', border: 'none', borderRadius: '4px', fontWeight: 'bold', cursor: 'pointer', marginTop: '10px' }}
-                        >
+                        <button type="submit" className="btn-submit">
                             Adicionar Treino
                         </button>
                     </form>

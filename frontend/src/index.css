@@ -215,52 +215,114 @@ tbody tr:hover {
     padding: 24px 0;
 }
 
-/* Contentor geral que envolve a página de Login */
-.login-page-container {
+/* ============================================================
+   FORMULÁRIOS GLOBAIS E PÁGINAS CENTRADAS
+   ============================================================ */
+
+/* Container Centrado para Páginas de Formulário */
+.page-center {
     display: flex;
-    justify-content: center; /* Centra horizontalmente */
-    align-items: center;     /* Centra verticalmente */
-    min-height: 80vh;        /* Ocupa a altura quase total do ecrã */
-    width: 100%;
-    background-color: #f4f6f9; /* Um fundo suave opcional */
-    padding: 20px;
-    box-sizing: border-box;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: calc(100vh - 80px);
+    padding: 40px 20px;
 }
 
-/* O quadrado/caixa do formulário em si */
-.login-card {
-    background: white;
-    padding: 40px;
+/* Card central com o Formulário */
+.form-card {
+    background: var(--cor-branco);
+    padding: 30px 40px;
     border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
     width: 100%;
-    max-width: 450px; /* Impede que o formulário estique demasiado */
+    max-width: 500px;
+    border-top: 5px solid var(--cor-primaria);
+}
+
+.form-card h2 {
     text-align: center;
+    color: var(--cor-primaria);
+    margin-bottom: 24px;
+    border-left: none;
+    padding-left: 0;
 }
 
-/* Ajuste nos inputs para ocuparem o espaço total da caixa */
-.login-card input {
+/* Campos de Formulário Comuns */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--cor-texto);
+    font-size: 0.95rem;
+}
+
+.form-control {
     width: 100%;
-    padding: 12px;
-    margin: 10px 0 20px 0;
-    border: 1px solid #ccc;
+    padding: 12px 14px;
+    border: 1px solid #ced4da;
     border-radius: 6px;
-    box-sizing: border-box;
+    font-family: var(--fonte-corpo);
+    font-size: 1rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    background-color: #fafbfe;
 }
 
-/* Ajuste no botão de submissão */
-.login-card button {
+.form-control:focus {
+    outline: none;
+    border-color: var(--cor-primaria);
+    box-shadow: 0 0 0 3px rgba(13, 42, 110, 0.15);
+    background-color: var(--cor-branco);
+}
+
+.form-control:disabled {
+    background-color: #e9ecef;
+    cursor: not-allowed;
+    color: #6c757d;
+}
+
+/* Checkboxes no Formulário */
+.form-check {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.form-check input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--cor-primaria);
+    cursor: pointer;
+}
+
+.form-check label {
+    margin-bottom: 0;
+    cursor: pointer;
+}
+
+/* Botão de Submit do Formulário */
+.btn-submit {
     width: 100%;
     padding: 12px;
-    background-color: #0a2060;
-    color: white;
+    background-color: var(--cor-primaria);
+    color: var(--cor-branco);
     border: none;
     border-radius: 6px;
     font-weight: bold;
+    font-size: 1.05rem;
     cursor: pointer;
-    transition: background 0.2s;
+    transition: background-color 0.3s, transform 0.1s;
+    margin-top: 10px;
 }
 
-.login-card button:hover {
-    background-color: #0056b3;
+.btn-submit:hover {
+    background-color: #0a2060;
+}
+
+.btn-submit:active {
+    transform: scale(0.98);
 }

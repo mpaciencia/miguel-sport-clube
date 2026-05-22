@@ -15,8 +15,8 @@ function Equipa() {
     }, []);
 
     return (
-        <div className="equipa-container">
-            <h1>Equipa</h1>
+        <div className="pagina-conteudo">
+            <h1 style={{ textAlign: 'center', marginBottom: '40px' }}>O Nosso Plantel</h1>
             <div className="equipa-grelha">
                 {jogadores.map(jogador => (
                     <Link to={`/equipa/${jogador.id}`} key={jogador.id} style={{ textDecoration: 'none', color: 'inherit' }}>

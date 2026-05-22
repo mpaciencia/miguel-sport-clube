@@ -98,17 +98,18 @@ function CriarConvocatoria() {
   return (
       <>
         <StaffNavbar />
-        <main className="container">
-          <div>
-            <h1>Criar / Editar Convocatória</h1>
+        <main className="page-center">
+          <div className="form-card" style={{ maxWidth: '600px' }}>
+            <h2>Criar / Editar Convocatória</h2>
 
-            {erro && <p style={{ color: 'red' }}>{erro}</p>}
-            {sucesso && <p style={{ color: 'green' }}>{sucesso}</p>}
+            {erro && <p className="erro-mensagem">{erro}</p>}
+            {sucesso && <p style={{ color: 'green', textAlign: 'center', fontWeight: 'bold' }}>{sucesso}</p>}
 
             <form onSubmit={handleSubmit}>
-              <div>
+              <div className="form-group">
                 <label>Jogo:</label>
                 <select
+                    className="form-control"
                     value={jogoSelecionado}
                     onChange={e => setJogoSelecionado(e.target.value)}
                     required
@@ -122,23 +123,26 @@ function CriarConvocatoria() {
                 </select>
               </div>
 
-              <div>
-                <h2>Seleciona os Convocados</h2>
-                {jogadores.map(jogador => (
-                    <div key={jogador.id}>
-                      <label>
-                        <input
-                            type="checkbox"
-                            checked={selecionados.includes(jogador.id)}
-                            onChange={() => toggleJogador(jogador.id)}
-                        />
-                        {jogador.numero_camisola} — {jogador.nome} ({jogador.posicao})
-                      </label>
-                    </div>
-                ))}
+              <div style={{ marginTop: '30px' }}>
+                <h3 style={{ borderBottom: '1px solid #dde1e9', paddingBottom: '10px', marginBottom: '15px' }}>Seleciona os Convocados</h3>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+                    {jogadores.map(jogador => (
+                        <div key={jogador.id} className="form-check" style={{ marginBottom: '10px' }}>
+                          <input
+                              type="checkbox"
+                              id={`jogador-${jogador.id}`}
+                              checked={selecionados.includes(jogador.id)}
+                              onChange={() => toggleJogador(jogador.id)}
+                          />
+                          <label htmlFor={`jogador-${jogador.id}`}>
+                              {jogador.numero_camisola} — {jogador.nome} ({jogador.posicao})
+                          </label>
+                        </div>
+                    ))}
+                </div>
               </div>
 
-              <button type="submit">Guardar Convocatória</button>
+              <button type="submit" className="btn-submit" style={{ marginTop: '20px' }}>Guardar Convocatória</button>
             </form>
           </div>
         </main>
